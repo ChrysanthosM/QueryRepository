@@ -172,6 +172,7 @@ public final class J2SQL {
         workLinSQL.orderBy(sortOrderAll, addOrderBy);
         return this;
     }
+
     @Description("add Order By")
     public J2SQL orderBy(@NonNull MutablePair<Object, SortOrder>... addOrderBy) {
         workLinSQL.orderBy(addOrderBy);
@@ -238,7 +239,7 @@ public final class J2SQL {
 
     @Description("Union with J2SQL")
     public J2SQL UNION(@NonNull J2SQL unionWithLinSQL) {
-        workLinSQL.UNION(unionWithLinSQL.workLinSQL);
+        workLinSQL.union(unionWithLinSQL.workLinSQL);
         return this;
     }
 

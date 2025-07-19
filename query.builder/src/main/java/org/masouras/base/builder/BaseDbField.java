@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface BaseDbField extends DeployFiltersBase, DeployOrderingBase, ProvideDataTypeForSQLBase {
-    static BaseDbField ALL() { return DummyALL.getDummyALL(); }
+    static BaseDbField all() { return DummyALL.getDummyALL(); }
 
     String systemName();
     DbFieldDataType fieldDataType();

@@ -105,7 +105,7 @@ final class LinSQL {
         Stream.of(addSelectedFields).filter(Objects::nonNull).forEach(o -> workLInSQLBuilder.getWorkLInSQLBuilderParams().addUserSelection(o, StringUtils.EMPTY));
     }
     public void selectAll() {
-        workLInSQLBuilder.getWorkLInSQLBuilderParams().addUserSelection(BaseDbField.ALL(), StringUtils.EMPTY);
+        workLInSQLBuilder.getWorkLInSQLBuilderParams().addUserSelection(BaseDbField.all(), StringUtils.EMPTY);
     }
 
     public void addFilters(@NonNull WhereBase... filters) {
@@ -172,12 +172,12 @@ final class LinSQL {
         workLInSQLBuilder.getWorkLInSQLBuilderParams().getLastJoin().getMiddle().select(addSelectField, asAlias);
     }
 
-    public void UNION(@NonNull LinSQL unionWithLinSQL) {
+    public void union(@NonNull LinSQL unionWithLinSQL) {
         workLInSQLBuilder.getWorkLInSQLBuilderParams().addUnionWithQuery(unionWithLinSQL);
     }
 
     public void updateFieldSetValue(@NonNull PairOfTableField updField, @NonNull Object setValue) {
-        Preconditions.checkArgument(updField.getBaseDbField() != BaseDbField.ALL());
+        Preconditions.checkArgument(updField.getBaseDbField() != BaseDbField.all());
         workLInSQLBuilder.getWorkLInSQLBuilderParams().setTypeOfSQL(J2SQLShared.TypeOfSQLStatement.SQL_UPDATE);
         workLInSQLBuilder.getWorkLInSQLBuilderParams().addUpdateFieldSetValue(updField, setValue);
     }

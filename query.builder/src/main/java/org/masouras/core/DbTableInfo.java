@@ -34,11 +34,11 @@ final class DbTableInfo {
     private final List<DbFieldDataType> dbtHasFieldsDataType ;
     private final List<Boolean> dbtHasInQuotesRequirement;
 
-    private final Map<BaseDbField, String> dbtHasFieldsNameEnum_NormalName;
-    private final Map<BaseDbField, String> dbtHasFieldsNameEnum_SystemName;
-    private final Map<BaseDbField, String> dbtHasFieldsNameEnum_AsAlias;
-    private final Map<BaseDbField, DbFieldDataType> dbtHasFieldsNameEnum_DataType;
-    private final Map<? extends BaseDbField, ? extends Boolean> dbtHasFieldsNameEnum_InQuotesRequirement;
+    private final Map<BaseDbField, String> dbtHasFieldsNameEnumNormalName;
+    private final Map<BaseDbField, String> dbtHasFieldsNameEnumSystemName;
+    private final Map<BaseDbField, String> dbtHasFieldsNameEnumAsAlias;
+    private final Map<BaseDbField, DbFieldDataType> dbtHasFieldsNameEnumDataType;
+    private final Map<? extends BaseDbField, Boolean> dbtHasFieldsNameEnumInQuotesRequirement;
 
     DbTableInfo(DbTable dbTable) {
         this.dbtNameEnum = dbTable.getBaseDbTable();
@@ -62,19 +62,19 @@ final class DbTableInfo {
         this.dbtHasFieldsDataType = this.dbtHasDbFields.stream().map(DbField::getDbfDataType).toList();
         this.dbtHasInQuotesRequirement = this.dbtHasDbFields.stream().map(DbField::getDbfInQuotesRequirement).toList();
 
-        this.dbtHasFieldsNameEnum_NormalName = Map.copyOf((Map<? extends BaseDbField, ? extends String>)
+        this.dbtHasFieldsNameEnumNormalName = Map.copyOf((Map<? extends BaseDbField, String>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
                         .collect(Collectors.toMap(this.dbtHasDbFieldNamesEnum::get, this.dbtHasFieldsNormalNames::get, (existing, replacement) -> existing, HashMap::new)));
-        this.dbtHasFieldsNameEnum_SystemName = Map.copyOf((Map<? extends BaseDbField, ? extends String>)
+        this.dbtHasFieldsNameEnumSystemName = Map.copyOf((Map<? extends BaseDbField, String>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
                         .collect(Collectors.toMap(this.dbtHasDbFieldNamesEnum::get, this.dbtHasFieldsSystemNames::get, (existing, replacement) -> existing, HashMap::new)));
-        this.dbtHasFieldsNameEnum_AsAlias = Map.copyOf((Map<? extends BaseDbField, ? extends String>)
+        this.dbtHasFieldsNameEnumAsAlias = Map.copyOf((Map<? extends BaseDbField, String>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
                         .collect(Collectors.toMap(this.dbtHasDbFieldNamesEnum::get, this.dbtHasFieldsAsAlias::get, (existing, replacement) -> existing, HashMap::new)));
-        this.dbtHasFieldsNameEnum_DataType = Map.copyOf((Map<? extends BaseDbField, ? extends DbFieldDataType>)
+        this.dbtHasFieldsNameEnumDataType = Map.copyOf((Map<? extends BaseDbField, DbFieldDataType>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
                         .collect(Collectors.toMap(this.dbtHasDbFieldNamesEnum::get, this.dbtHasFieldsDataType::get, (existing, replacement) -> existing, HashMap::new)));
-        this.dbtHasFieldsNameEnum_InQuotesRequirement = Map.copyOf((Map<? extends BaseDbField, ? extends Boolean>)
+        this.dbtHasFieldsNameEnumInQuotesRequirement = Map.copyOf((Map<? extends BaseDbField, Boolean>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
                         .collect(Collectors.toMap(this.dbtHasDbFieldNamesEnum::get, this.dbtHasInQuotesRequirement::get, (existing, replacement) -> existing, HashMap::new)));
     }

@@ -48,47 +48,87 @@ final class SQLFieldFromTable extends SqlUserSelection {
     @Override public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
         return getResolveObjectForSQLMain(forSQLRetrieverForDB, null);
     }
+
     String getResolveObjectForSQLMain(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable BaseDbTable forDbt) {
-        String returnName = StringUtils.defaultString(this.getHasPrefix());
+        String returnName = buildBaseReturnName(forSQLRetrieverForDB, forDbt);
 
-        String tableHasPrefixForFields = (forDbt == null ? StringUtils.EMPTY : StringUtils.defaultString(DbTableInstances.getInstance(forDbt).getTablePrefixForFields()));
-
-        if (this.dbF == BaseDbField.ALL()) {
-            returnName = returnName.concat(LinSQLCommons.ASTERISK);
-        } else {
-            if (forSQLRetrieverForDB.getTypeOfNamingSystemOrNormalized() == LinSQL.TypeOfNamingSystemOrNormalized.SYSTEM) {
-                returnName = returnName.concat(tableHasPrefixForFields.concat(this.dbField.getDbfSystemName()));
-            } else {
-                returnName = returnName.concat(this.dbField.getDbfNormalName());
-            }
+        if (hasNoExplicitPrefix()) {
+            returnName = addTablePrefix(returnName, forSQLRetrieverForDB);
         }
 
-        if (StringUtils.isBlank(this.getHasPrefix())) {
-            String tableAsAlias = StringUtils.defaultString(forSQLRetrieverForDB.getWorkLInSQLBuilderParams().getWorkWithTableOnlyAsAlias());
-            Set<Triple<DbTable, String, List<BaseDbField>>> availableTablesWithFields = forSQLRetrieverForDB.getAvailableTablesWithFields();
-            if (CollectionUtils.isNotEmpty(availableTablesWithFields)) {
-                List<Triple<DbTable, String, List<BaseDbField>>> tablesList = new ArrayList<>(availableTablesWithFields.stream().toList());
-                for (Triple<DbTable, String, List<BaseDbField>> availableTableWithFields : tablesList.reversed()) {
-                    List<BaseDbField> tblFields = availableTableWithFields.getRight();
-                    if (CollectionUtils.isNotEmpty(tblFields)
-                            && tblFields.contains(this.dbField.getDbfNameEnum())) {
-                        tableAsAlias = availableTableWithFields.getMiddle();
-                        break;
-                    }
-
-                }
-            }
-            if (StringUtils.isNotBlank(tableAsAlias)) returnName = tableAsAlias.concat(".").concat(returnName);
-        }
-
-        if (this.dbF != BaseDbField.ALL()) {
-            if (StringUtils.isBlank(super.getAsAlias())
-                    && forSQLRetrieverForDB.getWorkLInSQLBuilderParams().isApplyAutoAlias()
-                    && !super.isIgnoreTableAsAlias()) {
-                super.setAsAlias(this.dbField.getDbfAsAlias());
-            }
-        }
+        setAutoAliasIfNeeded(forSQLRetrieverForDB);
 
         return LinSQLCommons.applyAsAlias(returnName, super.getAsAlias(), false, false);
+    }
+
+    private String buildBaseReturnName(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable BaseDbTable forDbt) {
+        String prefix = StringUtils.defaultString(this.getHasPrefix());
+        if (this.dbF == BaseDbField.all()) {
+            return prefix.concat(LinSQLCommons.ASTERISK);
+        }
+
+        String tablePrefix = getTablePrefixForFields(forDbt);
+        String fieldName = getFieldName(forSQLRetrieverForDB);
+        return prefix.concat(tablePrefix).concat(fieldName);
+    }
+
+    private String getTablePrefixForFields(@Nullable BaseDbTable forDbt) {
+        return forDbt == null ?
+                StringUtils.EMPTY :
+                StringUtils.defaultString(DbTableInstances.getInstance(forDbt).getTablePrefixForFields());
+    }
+
+    private String getFieldName(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        return forSQLRetrieverForDB.getTypeOfNamingSystemOrNormalized() == LinSQL.TypeOfNamingSystemOrNormalized.SYSTEM ?
+                this.dbField.getDbfSystemName() :
+                this.dbField.getDbfNormalName();
+    }
+
+    private boolean hasNoExplicitPrefix() {
+        return StringUtils.isBlank(this.getHasPrefix());
+    }
+
+    private String addTablePrefix(String returnName, SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        String tableAlias = findAppropriateTableAlias(forSQLRetrieverForDB);
+        return StringUtils.isNotBlank(tableAlias) ?
+                tableAlias.concat(".").concat(returnName) :
+                returnName;
+    }
+
+    private String findAppropriateTableAlias(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        String defaultAlias = StringUtils.defaultString(forSQLRetrieverForDB.getWorkLInSQLBuilderParams().getWorkWithTableOnlyAsAlias());
+
+        Set<Triple<DbTable, String, List<BaseDbField>>> availableTables = forSQLRetrieverForDB.getAvailableTablesWithFields();
+        if (CollectionUtils.isEmpty(availableTables)) {
+            return defaultAlias;
+        }
+        return findTableContainingField(availableTables, defaultAlias);
+    }
+
+    private String findTableContainingField(Set<Triple<DbTable, String, List<BaseDbField>>> availableTables, String defaultAlias) {
+        for (Triple<DbTable, String, List<BaseDbField>> table : new ArrayList<>(availableTables).reversed()) {
+            if (tableContainsField(table)) {
+                return table.getMiddle();
+            }
+        }
+        return defaultAlias;
+    }
+
+    private boolean tableContainsField(Triple<DbTable, String, List<BaseDbField>> table) {
+        List<BaseDbField> fields = table.getRight();
+        return CollectionUtils.isNotEmpty(fields) && fields.contains(this.dbField.getDbfNameEnum());
+    }
+
+    private void setAutoAliasIfNeeded(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        if (shouldApplyAutoAlias(forSQLRetrieverForDB)) {
+            super.setAsAlias(this.dbField.getDbfAsAlias());
+        }
+    }
+
+    private boolean shouldApplyAutoAlias(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        return this.dbF != BaseDbField.all() &&
+                StringUtils.isBlank(super.getAsAlias()) &&
+                forSQLRetrieverForDB.getWorkLInSQLBuilderParams().isApplyAutoAlias() &&
+                !super.isIgnoreTableAsAlias();
     }
 }

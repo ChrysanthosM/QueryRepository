@@ -42,7 +42,7 @@ public interface BaseDbTable {
                             .map(e -> (BaseDbTable) e)
                             .toArray(BaseDbTable[]::new);
                 }
-            } catch (Exception e) {
+            } catch (Exception _) {
                 return new BaseDbTable[]{this};
             }
         }
