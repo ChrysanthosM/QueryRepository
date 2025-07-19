@@ -11,12 +11,16 @@ import org.masouras.sqlite.schema.table.AutoNumberingTable;
 import org.masouras.sqlite.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 
 import static org.masouras.core.J2SQLShared.*;
 
 @SpringBootTest
+@ComponentScan(basePackages = {
+        "org.masouras.base.datasource"
+})
 class TestSQLStatementsSQLite {
     private final List<String> stmts = Lists.newArrayList();
     private @Autowired WorkWithDataSource workDataSource;

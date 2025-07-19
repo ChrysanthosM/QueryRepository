@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.masouras.ApplicationRun;
 import org.masouras.base.datasource.WorkWithDataSource;
 import org.masouras.core.J2SQL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,6 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         loadBuffers();
         long loadingTime = System.currentTimeMillis() - startLoadingTime;
         log.log(Level.INFO, this.getClass().getSimpleName() + " loaded in " + loadingTime);
-        ApplicationRun.addLoadingTime(loadingTime);
     }
 
     private void loadBuffers() {
