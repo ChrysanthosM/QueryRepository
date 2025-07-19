@@ -2,6 +2,7 @@ package org.masouras.base.builder;
 
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
 
 public final class DummyALL implements BaseDbField {
@@ -22,7 +23,7 @@ public final class DummyALL implements BaseDbField {
     }
     @Override
     public List<Object> acceptedValues() {
-        return List.of();
+        return Collections.emptyList();
     }
 
     @Override
