@@ -15,7 +15,7 @@ import static org.masouras.base.builder.DbFieldDataType.DATATYPE_INTEGER;
 import static org.masouras.base.builder.DbFieldDataType.DATATYPE_TEXT;
 
 @Getter
-public enum DbFieldDb2i implements BaseDbField {
+public enum DbField implements BaseDbField {
     REC_ID("Sys_RecID", DATATYPE_INTEGER),
     USER_STAMP("Sys_UserStamp", DATATYPE_TEXT),
     DATE_STAMP("Sys_DateStamp", DATATYPE_TEXT),
@@ -35,22 +35,22 @@ public enum DbFieldDb2i implements BaseDbField {
 
     private final ConfigDbField configDbField;
 
-    DbFieldDb2i(String systemName) {
+    DbField(String systemName) {
         this.configDbField = new ConfigDbField(systemName, null, null, Collections.emptyList());
     }
-    DbFieldDb2i(String systemName, DbFieldDataType fieldDataType) {
+    DbField(String systemName, DbFieldDataType fieldDataType) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
                 Arrays.stream(systemName.toLowerCase().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(StringUtils.SPACE)),
-                Collections.singletonList(DbFieldValuesDb2i.getAcceptedValues(this)));
+                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
     }
-    DbFieldDb2i(String systemName, DbFieldDataType fieldDataType, String asAlias) {
+    DbField(String systemName, DbFieldDataType fieldDataType, String asAlias) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
                 asAlias,
-                Collections.singletonList(DbFieldValuesDb2i.getAcceptedValues(this)));
+                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
     }
 
     @Override

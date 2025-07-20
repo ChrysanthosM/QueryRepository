@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.masouras.base.datasource.WorkWithDataSource;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
-import org.masouras.sqlite.schema.structure.DbFieldValuesSQLite;
+import org.masouras.sqlite.schema.structure.DbFieldValues;
 import org.masouras.sqlite.schema.table.AutoNumberingTable;
 import org.masouras.sqlite.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -216,7 +216,7 @@ class TestSQLStatementsSQLite {
                         : "SELECT DISTINCT AASys_RecID AS \"Sys_Recid\", AASys_EntityType AS \"Sys_Entitytype\", AASys_EntityNumber AS \"Sys_Entitynumber\" FROM Sys_AutoNumbering WHERE (AASys_EntityNumber = 1)"));
 
         stmts.add(checkResult(J2SQL.create(workDataSource, normalizeNames).from(autoNumberingTable)
-                        .where(autoNumberingTable.ENTITY_TYPE.eq(DbFieldValuesSQLite.ValuesForEntityType.SURROGATE_NUM))
+                        .where(autoNumberingTable.ENTITY_TYPE.eq(DbFieldValues.ValuesForEntityType.SURROGATE_NUM))
                         .and(autoNumberingTable.ENTITY_TYPE.inSubSelect(J2SQL.create(workDataSource, normalizeNames).from(autoNumberingTable).select(autoNumberingTable.ENTITY_TYPE).getSQL()))
                         .and(J2SQLShared.not(autoNumberingTable.ENTITY_TYPE.like("AB%")))
                         .and(autoNumberingTable.ENTITY_TYPE.between(11, 22).or(autoNumberingTable.ENTITY_NUMBER.between(1, 2)))
@@ -281,8 +281,8 @@ class TestSQLStatementsSQLite {
 
         stmts.add(checkResult(J2SQL.create(workDataSource, normalizeNames).from(autoNumberingTable)
                         .select(J2SQLShared.CASE1n(11,
-                                J2SQLShared.WHEN(autoNumberingTable.ENTITY_TYPE.eq(DbFieldValuesSQLite.ValuesForEntityType.SURROGATE_NUM), 22),
-                                J2SQLShared.WHEN(autoNumberingTable.ENTITY_TYPE.lt(DbFieldValuesSQLite.ValuesForEntityType.SURROGATE_NUM), 33)))
+                                J2SQLShared.WHEN(autoNumberingTable.ENTITY_TYPE.eq(DbFieldValues.ValuesForEntityType.SURROGATE_NUM), 22),
+                                J2SQLShared.WHEN(autoNumberingTable.ENTITY_TYPE.lt(DbFieldValues.ValuesForEntityType.SURROGATE_NUM), 33)))
                         .select(J2SQLShared.CASE2s(autoNumberingTable.ENTITY_TYPE, "11",
                                 J2SQLShared.WHEN(2, "22"),
                                 J2SQLShared.WHEN(3, "33")))

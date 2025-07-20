@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import static org.masouras.base.builder.DbFieldDataType.*;
 
 @Getter
-public enum DbFieldSQLite implements BaseDbField {
+public enum DbField implements BaseDbField {
     REC_ID("Sys_RecID", DATATYPE_INTEGER),
     USER_STAMP("Sys_UserStamp", DATATYPE_TEXT),
     DATE_STAMP("Sys_DateStamp", DATATYPE_TEXT),
@@ -34,22 +34,22 @@ public enum DbFieldSQLite implements BaseDbField {
 
     private final ConfigDbField configDbField;
 
-    DbFieldSQLite(String systemName) {
+    DbField(String systemName) {
         this.configDbField = new ConfigDbField(systemName, null, null, Collections.emptyList());
     }
-    DbFieldSQLite(String systemName, DbFieldDataType fieldDataType) {
+    DbField(String systemName, DbFieldDataType fieldDataType) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
                 Arrays.stream(systemName.toLowerCase().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(StringUtils.SPACE)),
-                Collections.singletonList(DbFieldValuesSQLite.getAcceptedValues(this)));
+                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
     }
-    DbFieldSQLite(String systemName, DbFieldDataType fieldDataType, String asAlias) {
+    DbField(String systemName, DbFieldDataType fieldDataType, String asAlias) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
                 asAlias,
-                Collections.singletonList(DbFieldValuesSQLite.getAcceptedValues(this)));
+                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
     }
 
     @Override

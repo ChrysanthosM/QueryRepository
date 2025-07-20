@@ -1,4 +1,4 @@
-package org.masouras.db2i.schema.structure;
+package org.masouras.sqlite.schema.structure;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public final class DbFieldValuesDb2i {
+public final class DbFieldValues {
     private static final ConcurrentHashMap<BaseDbField, List<String>> bufferAcceptedValues = new ConcurrentHashMap<>();
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {
         return bufferAcceptedValues.getOrDefault(forField, Collections.emptyList());
@@ -23,7 +23,7 @@ public final class DbFieldValuesDb2i {
 
     @PostConstruct
     public void init() {
-        List<Class<?>> dbfWithValues = Arrays.asList(DbFieldValuesDb2i.class.getDeclaredClasses());
+        List<Class<?>> dbfWithValues = Arrays.asList(DbFieldValues.class.getDeclaredClasses());
         if (CollectionUtils.isNotEmpty(dbfWithValues)) {
             dbfWithValues.parallelStream().filter(e -> e.isEnum() && ValueForBase.class.isAssignableFrom(e)).forEach(e -> {
                 List<?> dbfValuesList = Arrays.asList(e.getEnumConstants());
@@ -39,14 +39,14 @@ public final class DbFieldValuesDb2i {
     @Getter @AllArgsConstructor
     public enum ValuesForEntityType implements ValueForBase {
         TEMP_STUCK("E01"), SURROGATE_NUM("E02");
-        private final DbFieldDb2i forDbField = DbFieldDb2i.ENTITY_TYPE;
+        private final DbField forDbField = DbField.ENTITY_TYPE;
         private final String value;
     }
 
     @Getter @AllArgsConstructor
     public enum ValuesForOptionType implements ValueForBase {
         SYS_PARAM("O01"), FORM_SETTING("O02");
-        private final DbFieldDb2i forDbField = DbFieldDb2i.OPTION_TYPE;
+        private final DbField forDbField = DbField.OPTION_TYPE;
         private final String value;
     }
 }

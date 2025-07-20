@@ -6,15 +6,15 @@ import org.masouras.base.builder.ConfigDbTable;
 
 import java.util.List;
 
-public enum DbTableSQLite implements BaseDbTable {
-    AUTO_NUMBERING("Sys_AutoNumbering", null, List.of(DbFieldSQLite.REC_ID), true, false),
+public enum DbTable implements BaseDbTable {
+    AUTO_NUMBERING("Sys_AutoNumbering", null, List.of(DbField.REC_ID), true, false),
 
-    USERS("Sys_Users", null, List.of(DbFieldSQLite.REC_ID), false, false),
-    OPTIONS("Sys_Options", null, List.of(DbFieldSQLite.REC_ID), true, true),
+    USERS("Sys_Users", null, List.of(DbField.REC_ID), false, false),
+    OPTIONS("Sys_Options", null, List.of(DbField.REC_ID), true, true),
     ;
 
     private final ConfigDbTable configDbTable;
-    DbTableSQLite(String systemName, String tablePrefixForFields, List<BaseDbField> hasKeys, Boolean autoIncrease, Boolean putAutoStamp) {
+    DbTable(String systemName, String tablePrefixForFields, List<BaseDbField> hasKeys, Boolean autoIncrease, Boolean putAutoStamp) {
         this.configDbTable = new ConfigDbTable(systemName, tablePrefixForFields, hasKeys, autoIncrease, putAutoStamp);
     }
     @Override
@@ -29,7 +29,7 @@ public enum DbTableSQLite implements BaseDbTable {
     public Boolean putAutoStamp() { return this.configDbTable.putAutoStamp(); }
 
     @Override
-    public BaseDbField getUserStampDbF() { return DbFieldSQLite.USER_STAMP; }
+    public BaseDbField getUserStampDbF() { return DbField.USER_STAMP; }
     @Override
-    public BaseDbField getDateStampDbF() { return DbFieldSQLite.DATE_STAMP; }
+    public BaseDbField getDateStampDbF() { return DbField.DATE_STAMP; }
 }
