@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class ClassLoaderFilter implements TypeFilter, EnvironmentAware {
-    private static final String BASE_PACKAGE = ClassLoaderFilter.class.getPackageName();
+public class DistributionLoaderFilter implements TypeFilter, EnvironmentAware {
+    private static final String BASE_PACKAGE = DistributionLoaderFilter.class.getPackageName();
 
     private static final Set<String> DATASOURCE_PACKAGES = Arrays.stream(WorkWithDataSource.DataSourceType.values())
             .map(WorkWithDataSource.DataSourceType::getPropertyName)
