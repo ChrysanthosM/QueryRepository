@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.masouras.base.datasource.WorkWithDataSource;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
-import org.masouras.sqlite.schema.structure.DbFieldValues;
-import org.masouras.sqlite.schema.table.AutoNumberingTable;
-import org.masouras.sqlite.schema.table.OptionsTable;
+import org.masouras.db2i.schema.structure.DbFieldValues;
+import org.masouras.db2i.schema.table.AutoNumberingTable;
+import org.masouras.db2i.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,8 +16,12 @@ import java.util.List;
 
 import static org.masouras.core.J2SQLShared.PFX;
 
-@SpringBootTest(classes = ApplicationRun.class)
-class TestSQLStatementsDb2i {
+@SpringBootTest(classes = ApplicationRun.class,
+        properties = {
+        "datasource.type=db2i",
+        "spring.jpa.database-platform=org.hibernate.dialect.DB2iDialect"
+})
+class TestSQLStatementsDB2i {
     private final List<String> stmts = Lists.newArrayList();
     private @Autowired WorkWithDataSource workDataSource;
     private @Autowired AutoNumberingTable autoNumberingTable;

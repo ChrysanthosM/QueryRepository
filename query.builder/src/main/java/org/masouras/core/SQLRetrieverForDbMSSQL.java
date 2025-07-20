@@ -41,15 +41,15 @@ final class SQLRetrieverForDbMSSQL extends SQLRetrieverForDbAbstract {
     @Override public Map<SortOrder, String> getOrderByType() { return orderByType; }
     @Override public Map<LinSQL.TypeOfJoin, String> getJoinType() { return joinType; }
 
-    @Override public String getLimitOffsetForSQL(Pair<BigInteger, BigInteger> setLimitOffset) { return StringUtils.EMPTY; }
-    @Override public String getOffsetFetchForSQL(Pair<BigInteger, BigInteger> setOffsetFetch) {
-        String offsetFetch = StringUtils.EMPTY;
-        if (setOffsetFetch != null) {
-            if (setOffsetFetch.getLeft() != null) { offsetFetch = "OFFSET ".concat(setOffsetFetch.getLeft().toString()).concat(" ROWS "); }
-            if (setOffsetFetch.getRight() != null) { offsetFetch = offsetFetch.concat("FETCH NEXT ".concat(setOffsetFetch.getRight().toString()).concat(" ROWS ONLY ")); }
+    @Override public String getLimitOffsetForSQL(Pair<BigInteger, BigInteger> setLimitOffset) {
+        String limitOffset = StringUtils.EMPTY;
+        if (setLimitOffset != null) {
+            if (setLimitOffset.getLeft() != null) {limitOffset = "LIMIT ".concat(setLimitOffset.getLeft().toString());}
+            if (setLimitOffset.getRight() != null) {limitOffset = limitOffset.concat(" OFFSET ".concat(setLimitOffset.getRight().toString()));}
         }
-        return offsetFetch;
+        return limitOffset;
     }
+    @Override public String getOffsetFetchForSQL(Pair<BigInteger, BigInteger> setOffsetFetch) { return StringUtils.EMPTY; }
 
 
     @Override
