@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.Set;
 
 @Configuration
 public class JdbcTemplateConfig {
+
     @Value("${spring.datasource.url:null}") private String sqliteDataSourceUrl;
     @Bean(name = "sqliteDataSource")
     @ConditionalOnProperty(name = "datasource.type", havingValue = "sqlite")

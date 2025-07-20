@@ -30,9 +30,9 @@ public final class WorkWithDataSource {
     @AllArgsConstructor
     @Getter
     public enum DataSourceType {
-        SQLITE ("sqlite",  null),
-        MSSQL ("mssql",  null),
-        DB2_I("db2i",  "$."),
+        SQLITE("sqlite", null),
+        MSSQL("mssql", null),
+        DB2_I("db2i", "$."),
         ;
         private final String propertyName;
         private final String tablePrefixToReplace;

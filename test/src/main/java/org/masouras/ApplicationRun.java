@@ -9,7 +9,7 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(
         basePackages = "org.masouras",
         excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.CUSTOM, classes = DataSourceTypeFilter.class)
+                @ComponentScan.Filter(type = FilterType.CUSTOM, classes = ClassLoaderFilter.class)
         }
 )
 public class ApplicationRun {
