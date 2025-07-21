@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public final class DbFieldInstances {
+public class DbFieldInstances {
     private static final Map<BaseDbField, DbField> mapFieldInstances = new ConcurrentHashMap<>();
 
     @PostConstruct

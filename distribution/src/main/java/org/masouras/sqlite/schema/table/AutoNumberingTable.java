@@ -7,7 +7,7 @@ import org.masouras.sqlite.schema.structure.DbTable;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class AutoNumberingTable extends AbstractTable {
+public class AutoNumberingTable extends AbstractTable {
     private AutoNumberingTable() {
         super(DbTable.AUTO_NUMBERING);
         setDbFs(REC_ID, ENTITY_TYPE, ENTITY_NUMBER);

@@ -7,7 +7,7 @@ import org.masouras.sqlite.schema.structure.DbTable;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class UsersTable extends AbstractTable {
+public class UsersTable extends AbstractTable {
     public UsersTable() {
         super(DbTable.USERS);
         setDbFs(REC_ID, USER_NAME, USER_PASSWORD);

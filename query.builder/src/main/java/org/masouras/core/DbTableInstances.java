@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public final class DbTableInstances {
+public class DbTableInstances {
     private static final Map<BaseDbTable, DbTable> mapTableInstances = new ConcurrentHashMap<>();
     private final List<DbTableBase> implementations;
 

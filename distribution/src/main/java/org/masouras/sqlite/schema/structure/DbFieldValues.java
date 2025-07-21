@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public final class DbFieldValues {
+public class DbFieldValues {
     private static final ConcurrentHashMap<BaseDbField, List<String>> bufferAcceptedValues = new ConcurrentHashMap<>();
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {
         return bufferAcceptedValues.getOrDefault(forField, Collections.emptyList());

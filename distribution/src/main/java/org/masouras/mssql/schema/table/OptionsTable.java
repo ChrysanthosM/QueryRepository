@@ -7,7 +7,7 @@ import org.masouras.mssql.schema.structure.DbTable;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class OptionsTable extends AbstractTable {
+public class OptionsTable extends AbstractTable {
     public OptionsTable() {
         super(DbTable.OPTIONS);
         setDbFs(REC_ID, OPTION_TYPE, OPTION_NAME, OPTION_VALUE, OPTION_DETAILS);
