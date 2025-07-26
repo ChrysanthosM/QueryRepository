@@ -22,8 +22,13 @@ class TestSQLStatementsSQLite {
 
     private final List<String> stmts = Lists.newArrayList();
 
-    private @Autowired AutoNumberingTable autoNumberingTable;
-    private @Autowired OptionsTable optionsTable;
+    private final AutoNumberingTable autoNumberingTable;
+    private final OptionsTable optionsTable;
+    @Autowired
+    TestSQLStatementsSQLite(AutoNumberingTable autoNumberingTable, OptionsTable optionsTable) {
+        this.autoNumberingTable = autoNumberingTable;
+        this.optionsTable = optionsTable;
+    }
 
     private String checkResult(String stmt, String shouldBe) {
         boolean areSame = StringUtils.equalsIgnoreCase(stmt, shouldBe);
