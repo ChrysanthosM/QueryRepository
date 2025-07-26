@@ -3,7 +3,7 @@ package org.masouras;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
 import org.masouras.test.mssql.schema.structure.DbFieldValues;
@@ -22,8 +22,10 @@ import static org.masouras.core.J2SQLShared.PFX;
         "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"
 })
 class TestSQLStatementsMSSQL {
+    private final DataSourceType workDataSource = DataSourceType.MSSQL;
+
     private final List<String> stmts = Lists.newArrayList();
-    private @Autowired WorkWithDataSource workDataSource;
+
     private @Autowired AutoNumberingTable autoNumberingTable;
     private @Autowired OptionsTable optionsTable;
 

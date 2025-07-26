@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.masouras.base.builder.BaseDbField;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 
 import javax.swing.*;
 import java.math.BigInteger;
@@ -33,14 +33,14 @@ final class LinSQL {
     public BuildSQLGroupByHavingValues getWorkBuildSQLGroupByHavingValues() { return workLInSQLBuilder.getWorkBuildSQLGroupByHavingValues(); }
     public List<String> getFieldMapper() { return workLInSQLBuilder.getSqlRetrieverForDB().getFieldMapper(); }
 
-    public static LinSQL create(WorkWithDataSource dataSource, boolean normalizeNames) { return new LinSQL(dataSource, normalizeNames); }
-    private LinSQL(WorkWithDataSource dataSource, boolean normalizeNames) {
+    public static LinSQL create(DataSourceType dataSourceType, boolean normalizeNames) { return new LinSQL(dataSourceType, normalizeNames); }
+    private LinSQL(DataSourceType dataSourceType, boolean normalizeNames) {
         TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized = normalizeNames ? TypeOfNamingSystemOrNormalized.NORMALIZED : TypeOfNamingSystemOrNormalized.SYSTEM;
 
-        switch (dataSource.getDefaultDataSourceType()) {
-            case DB2_I -> workLInSQLBuilder = LInSQLBuilder.createWithTablePrefix(dataSource.getDefaultDataSourceType(), typeOfNamingSystemOrNormalized, dataSource.getDefaultDataSourceType().getTablePrefixToReplace());
+        switch (dataSourceType) {
+            case DB2_I -> workLInSQLBuilder = LInSQLBuilder.createWithTablePrefix(dataSourceType, typeOfNamingSystemOrNormalized, dataSourceType.getTablePrefixToReplace());
 
-            default -> workLInSQLBuilder = LInSQLBuilder.createDefault(dataSource.getDefaultDataSourceType(), typeOfNamingSystemOrNormalized);
+            default -> workLInSQLBuilder = LInSQLBuilder.createDefault(dataSourceType, typeOfNamingSystemOrNormalized);
         }
     }
 

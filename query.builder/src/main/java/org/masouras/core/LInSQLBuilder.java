@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 
 
 final class LInSQLBuilder {
@@ -13,14 +13,14 @@ final class LInSQLBuilder {
     private final SQLStatementRetrieve sqlStatementRetrieve;
     SQLRetrieverForDbAbstract getSqlRetrieverForDB() { return this.sqlStatementRetrieve.getSqlRetrieverForDB(); }
 
-    static LInSQLBuilder createDefault(WorkWithDataSource.DataSourceType dataSourceType, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized) {
+    static LInSQLBuilder createDefault(DataSourceType dataSourceType, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized) {
         return new LInSQLBuilder(dataSourceType, typeOfNamingSystemOrNormalized, StringUtils.EMPTY);
     }
-    static LInSQLBuilder createWithTablePrefix(WorkWithDataSource.DataSourceType dataSourceType, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized, String dbPrefixForTable) {
+    static LInSQLBuilder createWithTablePrefix(DataSourceType dataSourceType, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized, String dbPrefixForTable) {
         return new LInSQLBuilder(dataSourceType, typeOfNamingSystemOrNormalized, dbPrefixForTable);
     }
 
-    private LInSQLBuilder(WorkWithDataSource.DataSourceType typeOfDB, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized, String dbPrefixForTable) {
+    private LInSQLBuilder(DataSourceType typeOfDB, LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized, String dbPrefixForTable) {
         this.sqlStatementRetrieve = new SQLStatementRetrieve(typeOfDB, typeOfNamingSystemOrNormalized, dbPrefixForTable);
     }
 

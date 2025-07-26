@@ -1,8 +1,8 @@
 package org.masouras.test.sqlite.repo.squad.test;
 
-import org.masouras.base.repo.RepoBase;
+import org.masouras.base.repo.RepoBaseSQLite;
 
-public interface OptionsRepo extends RepoBase {
+public interface OptionsRepo extends RepoBaseSQLite {
     enum NameOfSQL {
         LIST,
         FIND,

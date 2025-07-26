@@ -1,8 +1,8 @@
 package org.masouras.test.mssql.repo.squad.test;
 
-import org.masouras.base.repo.RepoBase;
+import org.masouras.base.repo.RepoBaseMSSQL;
 
-public interface OptionsRepo extends RepoBase {
+public interface OptionsRepo extends RepoBaseMSSQL {
     enum NameOfSQL {
         LIST,
         FIND,

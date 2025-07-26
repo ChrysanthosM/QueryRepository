@@ -1,8 +1,8 @@
 package org.masouras.test.sqlite.repo.squad.test;
 
-import org.masouras.base.repo.RepoBase;
+import org.masouras.base.repo.RepoBaseSQLite;
 
-public interface AutoNumberingRepo extends RepoBase {
+public interface AutoNumberingRepo extends RepoBaseSQLite {
     enum NameOfSQL {
         LIST,
         INSERT,

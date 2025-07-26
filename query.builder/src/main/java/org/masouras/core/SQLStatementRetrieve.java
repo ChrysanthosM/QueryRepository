@@ -1,12 +1,12 @@
 package org.masouras.core;
 
 import lombok.Getter;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 
 @Getter
 final class SQLStatementRetrieve {
     private final SQLRetrieverForDbAbstract sqlRetrieverForDB;
-    SQLStatementRetrieve(WorkWithDataSource.DataSourceType typeOfDB,
+    SQLStatementRetrieve(DataSourceType typeOfDB,
                          LinSQL.TypeOfNamingSystemOrNormalized typeOfNamingSystemOrNormalized,
                          String dbPrefixForTable) {
         switch (typeOfDB) {

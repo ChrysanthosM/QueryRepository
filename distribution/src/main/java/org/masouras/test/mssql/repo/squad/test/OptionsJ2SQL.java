@@ -19,16 +19,16 @@ public class OptionsJ2SQL extends AbstractJ2<OptionsRepo.NameOfSQL> implements O
     @LoadJ2SQL
     @SuppressWarnings("unused")
     public void loadList() {
-        addLoader(NameOfSQL.LIST, J2SQL.create(getWorkWithDataSource()).from(optionsTable));
+        addLoader(NameOfSQL.LIST, J2SQL.create(getDataSourceType()).from(optionsTable));
     }
 
     @LoadJ2SQL @SuppressWarnings("unused")
     public void loadInsert() {
-        addLoader(NameOfSQL.INSERT, J2SQL.create(getWorkWithDataSource()).insertInto(optionsTable).insertRow());
+        addLoader(NameOfSQL.INSERT, J2SQL.create(getDataSourceType()).insertInto(optionsTable).insertRow());
     }
 
     @LoadJ2SQL @SuppressWarnings("unused")
     public void loadFind() {
-        addLoader(NameOfSQL.FIND, J2SQL.create(getWorkWithDataSource()).from(optionsTable).where(optionsTable.OPTION_TYPE.eq("?")));
+        addLoader(NameOfSQL.FIND, J2SQL.create(getDataSourceType()).from(optionsTable).where(optionsTable.OPTION_TYPE.eq("?")));
     }
 }

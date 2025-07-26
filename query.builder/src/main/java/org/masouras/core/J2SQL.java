@@ -6,7 +6,7 @@ import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 import org.springframework.context.annotation.Description;
 
 import javax.swing.*;
@@ -16,18 +16,18 @@ import java.util.Set;
 
 public final class J2SQL {
     private static final Set<String> OPERATION_SYMBOLS = Set.of("+", "-", "*", "/");
-    private final WorkWithDataSource forDataSource;
+    private final DataSourceType workDataSourceType;
     private final LinSQL workLinSQL;
     private final boolean normalizeNames;
 
     @Description("Returns a new J2SQL with system names")
-    public static J2SQL create(WorkWithDataSource forDataSource) { return create(forDataSource, false); }
+    public static J2SQL create(DataSourceType forDataSourceType) { return create(forDataSourceType, false); }
     @Description("Returns a new J2SQL with System or Normalized names")
-    public static J2SQL create(WorkWithDataSource forDataSource, boolean normalizeNames) { return new J2SQL(forDataSource, normalizeNames); }
-    private J2SQL(WorkWithDataSource forDataSource, boolean normalizeNames) {
-        this.forDataSource = forDataSource;
+    public static J2SQL create(DataSourceType forDataSourceType, boolean normalizeNames) { return new J2SQL(forDataSourceType, normalizeNames); }
+    private J2SQL(DataSourceType forDataSourceType, boolean normalizeNames) {
+        this.workDataSourceType = forDataSourceType;
         this.normalizeNames = normalizeNames;
-        this.workLinSQL = LinSQL.create(this.forDataSource, this.normalizeNames);
+        this.workLinSQL = LinSQL.create(this.workDataSourceType, this.normalizeNames);
     }
     
     @Description("Select Operation")
@@ -201,22 +201,22 @@ public final class J2SQL {
         workLinSQL.joinWith(typeOfJoin, joinWith.workLinSQL, joinOn);
         return this;
     }
-    @Description("Left Join with") public J2SQL leftJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
-    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith)); }
-    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Right Join with") public J2SQL rightJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
-    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith)); }
-    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Inner Join with") public J2SQL innerJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
-    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith)); }
-    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Full Join with") public J2SQL fullJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
-    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith)); }
-    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
-    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.forDataSource, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Left Join with") public J2SQL leftJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
+    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith)); }
+    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Left Join with") public J2SQL leftJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.LEFT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Right Join with") public J2SQL rightJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
+    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith)); }
+    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Right Join with") public J2SQL rightJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.RIGHT, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Inner Join with") public J2SQL innerJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
+    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith)); }
+    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Inner Join with") public J2SQL innerJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.JOIN, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Full Join with") public J2SQL fullJoin(@NonNull Pair<DbTable, String> joinWithAsAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWithAsAlias.getLeft(), joinWithAsAlias.getRight())); }
+    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith)); }
+    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith, @NonNull String asAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
+    @Description("Full Join with") public J2SQL fullJoin(@NonNull DbTable joinWith, @NonNull J2SQLShared.PFX asAlias) { return joinWith(LinSQL.TypeOfJoin.FULL, J2SQL.create(this.workDataSourceType, this.normalizeNames).from(joinWith, asAlias)); }
     @Description("Join On") public J2SQL on(@NonNull WhereBase... joinOn) {
         workLinSQL.on(joinOn);
         return this;

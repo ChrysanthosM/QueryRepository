@@ -9,7 +9,7 @@ public class DataSourceResolver {
     private @Autowired DataSourceProviderForMSSQL dataSourceForMSSQL;
     private @Autowired DataSourceProviderForDB2i dataSourceProviderForDB2i;
 
-    public DataSourceProvider getDefaultDataSource(WorkWithDataSource.DataSourceType dataSourceType) {
+    public DataSourceProvider getDefaultDataSource(DataSourceType dataSourceType) {
         return switch (dataSourceType) {
             case SQLITE -> dataSourceForSQLite;
             case MSSQL -> dataSourceForMSSQL;

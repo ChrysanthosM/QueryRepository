@@ -9,9 +9,8 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.masouras.base.datasource.WorkWithDataSource;
+import org.masouras.base.datasource.DataSourceType;
 import org.masouras.core.J2SQL;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,9 +25,8 @@ import static org.masouras.base.repo.LoadParams.LOAD_TIMEOUT;
 
 @Log
 public abstract class AbstractJ2<E extends Enum<E>> {
-    @Getter(AccessLevel.PROTECTED) private @Autowired WorkWithDataSource workWithDataSource;
-
     @Getter(AccessLevel.PRIVATE) private final Class<E> nameOfSQL;
+
     private final Map<E, J2SQL> bufferJ2SQLs = new ConcurrentHashMap<>();
     private final Map<E, String> bufferSQLs = new ConcurrentHashMap<>();
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
@@ -36,7 +34,9 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     @PersistenceContext
     private EntityManager entityManager;
 
-    protected AbstractJ2(Class<E> nameOfSQL) { this.nameOfSQL = nameOfSQL; }
+    protected AbstractJ2(Class<E> nameOfSQL) {
+        this.nameOfSQL = nameOfSQL;
+    }
 
     protected void addLoader(E nameOfSQL, J2SQL j2SQL) { loadBuffers.add(Pair.of(nameOfSQL, CompletableFuture.supplyAsync(() -> j2SQL))); }
 

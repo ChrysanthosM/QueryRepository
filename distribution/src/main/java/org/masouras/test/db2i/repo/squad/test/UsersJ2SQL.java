@@ -19,11 +19,11 @@ public class UsersJ2SQL extends AbstractJ2<UsersRepo.NameOfSQL> implements Users
     @LoadJ2SQL
     @SuppressWarnings("unused")
     public void loadList() {
-        addLoader(NameOfSQL.LIST, J2SQL.create(getWorkWithDataSource()).from(usersTable));
+        addLoader(NameOfSQL.LIST, J2SQL.create(getDataSourceType()).from(usersTable));
     }
 
     @LoadJ2SQL @SuppressWarnings("unused")
     public void loadInsert() {
-        addLoader(NameOfSQL.INSERT, J2SQL.create(getWorkWithDataSource()).insertInto(usersTable).insertRow());
+        addLoader(NameOfSQL.INSERT, J2SQL.create(getDataSourceType()).insertInto(usersTable).insertRow());
     }
 }
