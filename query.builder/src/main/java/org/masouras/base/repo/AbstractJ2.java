@@ -61,18 +61,19 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         }
         if (loadBuffers.isEmpty()) return;
 
-        loadBuffers.parallelStream().forEach(m -> {
-            try {
-                bufferJ2SQLs.put(m.getKey(), m.getValue().get(LOAD_TIMEOUT, TimeUnit.SECONDS));
-                bufferSQLs.put(m.getKey(), bufferJ2SQLs.get(m.getKey()).getSQL());
-                loadBuffers.remove(m);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            } catch (ExecutionException | TimeoutException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+            loadBuffers.forEach(pair -> scope.fork(() -> {
+                J2SQL j2sql = pair.getValue().get(LOAD_TIMEOUT, TimeUnit.SECONDS);
+                bufferJ2SQLs.put(pair.getKey(), j2sql);
+                bufferSQLs.put(pair.getKey(), j2sql.getSQL());
+                return null;
+            }));
+            scope.join().throwIfFailed();
+
+            loadBuffers.clear();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     private void invokeThis(Method m) {
         try {
