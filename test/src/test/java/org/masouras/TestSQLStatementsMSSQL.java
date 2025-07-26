@@ -18,9 +18,9 @@ import static org.masouras.core.J2SQLShared.PFX;
 
 @SpringBootTest(classes = ApplicationRun.class,
         properties = {
-        "datasource.type=mssql",
-        "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"
-})
+                "datasource.type=mssql",
+                "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"
+        })
 class TestSQLStatementsMSSQL {
     private final DataSourceType workDataSource = DataSourceType.MSSQL;
 

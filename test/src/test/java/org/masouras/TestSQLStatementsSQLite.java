@@ -16,7 +16,11 @@ import java.util.List;
 
 import static org.masouras.core.J2SQLShared.*;
 
-@SpringBootTest(classes = ApplicationRun.class)
+@SpringBootTest(classes = ApplicationRun.class,
+        properties = {
+                "datasource.type=sqlite",
+                "spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect"
+        })
 class TestSQLStatementsSQLite {
     private final DataSourceType workDataSource = DataSourceType.SQLITE;
 

@@ -9,17 +9,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.util.Set;
 
 @Configuration
 public class JdbcTemplateConfig {
 
-    @Value("${spring.datasource.url:null}") private String sqliteDataSourceUrl;
+    @Value("${sqlite.url:null}") private String sqliteUrl;
     @Bean(name = "sqliteDataSource")
     @ConditionalOnProperty(name = "datasource.type", havingValue = "sqlite")
     public DataSource sqliteDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(sqliteDataSourceUrl);
+        dataSource.setJdbcUrl(sqliteUrl);
         return dataSource;
     }
     @Bean(name = "sqliteJdbcTemplate")
