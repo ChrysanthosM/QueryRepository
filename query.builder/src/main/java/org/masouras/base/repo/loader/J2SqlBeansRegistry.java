@@ -8,6 +8,8 @@ import org.masouras.base.annotation.J2SqlFieldValues;
 import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.J2SqlService;
 import org.masouras.base.annotation.J2SqlTable;
+import org.masouras.base.builder.BaseDbField;
+import org.masouras.core.ValueForBase;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -24,13 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 @Slf4j
-public class SuffixBeanRegistry implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
+public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
     private static final Set<Class<? extends Annotation>> scanAnnotations = Set.of(
             J2SqlLoader.class,
             J2SqlService.class,
@@ -50,32 +50,63 @@ public class SuffixBeanRegistry implements BeanDefinitionRegistryPostProcessor, 
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, scanAnnotations));
 
-        String groupId = getGroupId();
-        scanner.findCandidateComponents(groupId).stream()
-                .map(BeanDefinition::getBeanClassName)
-                .filter(Objects::nonNull)
-                .map(className -> {
-                    try {
-                        return Class.forName(className);
-                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
-                        log.error("Skipping invalid class: {}", className);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .filter(clazz -> scanAnnotations.stream().anyMatch(clazz::isAnnotationPresent))
-                .forEach(clazz -> {
-                    String baseBeanName = Introspector.decapitalize(clazz.getSimpleName());
-                    String annotationSuffix = extractSuffixFromAnnotations(clazz);
-                    String newBeanName = StringUtils.isBlank(annotationSuffix)
-                            ? baseBeanName
-                            : baseBeanName + "_" + annotationSuffix;
+        Map<DbFieldAllValues.DbFieldKey, List<String>> collectedFieldValues = new HashMap<>();
+        for (BeanDefinition candidate : scanner.findCandidateComponents(getGroupId())) {
+            String className = candidate.getBeanClassName();
+            if (className == null) continue;
 
-                    GenericBeanDefinition definition = new GenericBeanDefinition();
-                    definition.setBeanClass(clazz);
-                    registry.registerBeanDefinition(newBeanName, definition);
-                });
+            try {
+                Class<?> clazz = Class.forName(className);
+                if (scanAnnotations.stream().noneMatch(clazz::isAnnotationPresent)) continue;
+
+                registerJ2Bean(registry, clazz);
+                processFieldValues(clazz, collectedFieldValues);
+            } catch (ClassNotFoundException | NoClassDefFoundError e) {
+                log.error("Skipping invalid class: {}", className, e);
+            }
+        }
+        collectedFieldValues.forEach(DbFieldAllValues::put);
     }
+
+    private void processFieldValues(Class<?> clazz, Map<DbFieldAllValues.DbFieldKey, List<String>> collectedFieldValues) {
+        J2SqlFieldValues valuesAnn = clazz.getAnnotation(J2SqlFieldValues.class);
+        if (valuesAnn != null) {
+            String sourceId = valuesAnn.value();
+
+            for (Class<?> innerClass : clazz.getDeclaredClasses()) {
+                if (innerClass.isEnum() && ValueForBase.class.isAssignableFrom(innerClass)) {
+                    List<String> valuesList = new ArrayList<>();
+                    BaseDbField dbField = null;
+
+                    for (Object constant : innerClass.getEnumConstants()) {
+                        ValueForBase vfb = (ValueForBase) constant;
+                        valuesList.add(vfb.getValue());
+                        dbField = vfb.getForDbField();
+                    }
+
+                    if (dbField != null) {
+                        DbFieldAllValues.DbFieldKey key = new DbFieldAllValues.DbFieldKey(sourceId, dbField);
+                        collectedFieldValues.merge(key, valuesList, (existing, incoming) -> {
+                            Set<String> merged = new LinkedHashSet<>(existing);
+                            merged.addAll(incoming);
+                            return List.copyOf(merged);
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    private void registerJ2Bean(@NotNull BeanDefinitionRegistry registry, Class<?> clazz) {
+        String baseBeanName = Introspector.decapitalize(clazz.getSimpleName());
+        String suffix = extractSuffixFromAnnotations(clazz);
+        String newBeanName = (suffix == null || suffix.isBlank()) ? baseBeanName : baseBeanName + "_" + suffix;
+
+        GenericBeanDefinition definition = new GenericBeanDefinition();
+        definition.setBeanClass(clazz);
+        registry.registerBeanDefinition(newBeanName, definition);
+    }
+
 
     private String getGroupId() {
         try (InputStream input = getClass().getResourceAsStream("/application.properties")) {
