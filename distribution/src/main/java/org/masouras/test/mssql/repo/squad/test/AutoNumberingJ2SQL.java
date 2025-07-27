@@ -2,7 +2,7 @@ package org.masouras.test.mssql.repo.squad.test;
 
 import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
-import org.masouras.base.repo.loader.AbstractJ2;
+import org.masouras.base.repo.base.AbstractJ2;
 import org.masouras.core.J2SQL;
 import org.masouras.test.mssql.schema.table.AutoNumberingTable;
 import org.springframework.beans.factory.annotation.Autowired;

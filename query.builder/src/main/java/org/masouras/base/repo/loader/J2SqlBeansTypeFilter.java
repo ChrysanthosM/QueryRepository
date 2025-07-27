@@ -1,4 +1,4 @@
-package org.masouras.test;
+package org.masouras.base.repo.loader;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

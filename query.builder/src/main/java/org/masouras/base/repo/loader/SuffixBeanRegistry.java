@@ -1,5 +1,6 @@
-package org.masouras.test;
+package org.masouras.base.repo.loader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,11 +20,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.beans.Introspector;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 
 @Configuration
+@Slf4j
 public class SuffixBeanRegistry implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
     private static final Set<Class<? extends Annotation>> scanAnnotations = Set.of(
             J2SqlLoader.class,
@@ -32,8 +38,8 @@ public class SuffixBeanRegistry implements BeanDefinitionRegistryPostProcessor, 
             J2SqlTable.class
     );
 
-    private Environment environment;
 
+    private Environment environment;
     @Override
     public void setEnvironment(@NotNull Environment environment) {
         this.environment = environment;
@@ -44,24 +50,40 @@ public class SuffixBeanRegistry implements BeanDefinitionRegistryPostProcessor, 
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, scanAnnotations));
 
-        for (BeanDefinition candidate : scanner.findCandidateComponents("org.masouras")) {
-            String className = candidate.getBeanClassName();
-            if (className == null) continue;
+        String groupId = getGroupId();
+        scanner.findCandidateComponents(groupId).stream()
+                .map(BeanDefinition::getBeanClassName)
+                .filter(Objects::nonNull)
+                .map(className -> {
+                    try {
+                        return Class.forName(className);
+                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+                        log.error("Skipping invalid class: {}", className);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .filter(clazz -> scanAnnotations.stream().anyMatch(clazz::isAnnotationPresent))
+                .forEach(clazz -> {
+                    String baseBeanName = Introspector.decapitalize(clazz.getSimpleName());
+                    String annotationSuffix = extractSuffixFromAnnotations(clazz);
+                    String newBeanName = StringUtils.isBlank(annotationSuffix)
+                            ? baseBeanName
+                            : baseBeanName + "_" + annotationSuffix;
 
-            try {
-                Class<?> clazz = Class.forName(className);
-                if (scanAnnotations.stream().noneMatch(clazz::isAnnotationPresent)) continue;
+                    GenericBeanDefinition definition = new GenericBeanDefinition();
+                    definition.setBeanClass(clazz);
+                    registry.registerBeanDefinition(newBeanName, definition);
+                });
+    }
 
-                String baseBeanName = Introspector.decapitalize(clazz.getSimpleName());
-                String annotationSuffix = extractSuffixFromAnnotations(clazz);
-                String newBeanName = StringUtils.isBlank(annotationSuffix) ? baseBeanName : baseBeanName + "_" + annotationSuffix;
-
-                GenericBeanDefinition definition = new GenericBeanDefinition();
-                definition.setBeanClass(clazz);
-                registry.registerBeanDefinition(newBeanName, definition);
-            } catch (ClassNotFoundException e) {
-                throw new BeansException("Failed to load class: " + className, e) {};
-            }
+    private String getGroupId() {
+        try (InputStream input = getClass().getResourceAsStream("/application.properties")) {
+            Properties props = new Properties();
+            props.load(input);
+            return props.getProperty("groupId");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

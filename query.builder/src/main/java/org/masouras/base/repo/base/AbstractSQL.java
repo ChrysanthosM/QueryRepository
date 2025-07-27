@@ -1,4 +1,4 @@
-package org.masouras.base.repo.loader;
+package org.masouras.base.repo.base;
 
 import org.masouras.core.J2SQL;
 

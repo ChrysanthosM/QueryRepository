@@ -1,7 +1,7 @@
 package org.masouras.test.db2i.repo.squad.test;
 
 import org.masouras.base.annotation.J2SqlService;
-import org.masouras.base.repo.loader.AbstractSQL;
+import org.masouras.base.repo.base.AbstractSQL;
 import org.masouras.test.db2i.schema.table.AutoNumberingTable;
 import org.springframework.beans.factory.annotation.Autowired;
 

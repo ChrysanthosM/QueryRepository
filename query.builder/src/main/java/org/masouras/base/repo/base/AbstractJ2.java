@@ -1,9 +1,9 @@
-package org.masouras.base.repo.loader;
+package org.masouras.base.repo.base;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.masouras.base.annotation.LoadJ2SQL;
@@ -16,11 +16,10 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.logging.Level;
 
-import static org.masouras.base.repo.loader.LoadJ2SQLParams.LOAD_TIMEOUT;
+import static org.masouras.base.repo.base.LoadJ2SQLParams.LOAD_TIMEOUT;
 
-@Log
+@Slf4j
 public abstract class AbstractJ2<E extends Enum<E>> {
     @Getter(AccessLevel.PRIVATE) private final Class<E> nameOfSQL;
 
@@ -46,7 +45,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         long startLoadingTime = System.currentTimeMillis();
         loadBuffers();
         long loadingTime = System.currentTimeMillis() - startLoadingTime;
-        log.log(Level.INFO, this.getClass().getSimpleName() + " loaded in " + loadingTime);
+        log.info("{} loaded in {}", this.getClass().getSimpleName(), loadingTime);
     }
 
     private void loadBuffers() {
