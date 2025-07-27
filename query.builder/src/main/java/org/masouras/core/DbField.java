@@ -3,7 +3,7 @@ package org.masouras.core;
 import lombok.Getter;
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.DbFieldDataType;
-import org.masouras.base.repo.loader.DbFieldAllValues;
+import org.masouras.base.repo.loader.DbFieldAcceptedValuesRegistry;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +31,6 @@ final class DbField {
         this.dbfDataType = this.dbfNameEnum.getFieldDataType();
         this.dbfInQuotesRequirement = this.dbfDataType == null ? null : this.dbfDataType.getInQuotesRequirement();
 
-        this.dbfAcceptedValues = Collections.singletonList(DbFieldAllValues.get(this.dbfNameEnum));
+        this.dbfAcceptedValues = Collections.singletonList(DbFieldAcceptedValuesRegistry.get(this.dbfNameEnum));
     }
 }

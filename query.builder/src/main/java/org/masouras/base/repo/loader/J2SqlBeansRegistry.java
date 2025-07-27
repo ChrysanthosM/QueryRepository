@@ -54,7 +54,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
         scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, extendedAnnotations));
 
         List<Class<?>> createBeanClasses = new ArrayList<>();
-        Map<String, List<String>> collectedFieldValues = new HashMap<>();
+        Map<String, List<String>> acceptedFieldValues = new HashMap<>();
         for (BeanDefinition candidate : scanner.findCandidateComponents(getGroupId())) {
             String className = candidate.getBeanClassName();
             if (className == null) continue;
@@ -62,13 +62,13 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
             try {
                 Class<?> clazz = Class.forName(className);
                 if (createBeanAnnotations.stream().anyMatch(clazz::isAnnotationPresent)) createBeanClasses.add(clazz);
-                if (clazz.isAnnotationPresent(J2SqlFieldValues.class)) processFieldValues(clazz, collectedFieldValues);
+                if (clazz.isAnnotationPresent(J2SqlFieldValues.class)) processFieldValues(clazz, acceptedFieldValues);
             } catch (ClassNotFoundException | NoClassDefFoundError e) {
                 log.error("Skipping invalid class: {}", className, e);
             }
         }
         createBeanClasses.forEach(clazz -> registerJ2Bean(registry, clazz));
-        collectedFieldValues.forEach(DbFieldAllValues::put);
+        acceptedFieldValues.forEach(DbFieldAcceptedValuesRegistry::put);
     }
 
 

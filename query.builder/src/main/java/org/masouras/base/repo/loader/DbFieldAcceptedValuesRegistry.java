@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @UtilityClass
-public final class DbFieldAllValues {
+public final class DbFieldAcceptedValuesRegistry {
     private static final Map<String, List<String>> registry = new ConcurrentHashMap<>();
 
     public static void put(String key, List<String> values) {
