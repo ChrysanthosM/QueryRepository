@@ -50,7 +50,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, scanAnnotations));
 
-        Map<DbFieldAllValues.DbFieldKey, List<String>> collectedFieldValues = new HashMap<>();
+        Map<String, List<String>> collectedFieldValues = new HashMap<>();
         for (BeanDefinition candidate : scanner.findCandidateComponents(getGroupId())) {
             String className = candidate.getBeanClassName();
             if (className == null) continue;
@@ -68,10 +68,9 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
         collectedFieldValues.forEach(DbFieldAllValues::put);
     }
 
-    private void processFieldValues(Class<?> clazz, Map<DbFieldAllValues.DbFieldKey, List<String>> collectedFieldValues) {
+    private void processFieldValues(Class<?> clazz, Map<String, List<String>> collectedFieldValues) {
         J2SqlFieldValues valuesAnn = clazz.getAnnotation(J2SqlFieldValues.class);
         if (valuesAnn != null) {
-            String sourceId = valuesAnn.value();
 
             for (Class<?> innerClass : clazz.getDeclaredClasses()) {
                 if (innerClass.isEnum() && ValueForBase.class.isAssignableFrom(innerClass)) {
@@ -85,8 +84,8 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
                     }
 
                     if (dbField != null) {
-                        DbFieldAllValues.DbFieldKey key = new DbFieldAllValues.DbFieldKey(sourceId, dbField);
-                        collectedFieldValues.merge(key, valuesList, (existing, incoming) -> {
+                        String fullPathKey = dbField.getClass().getCanonicalName() + "." + dbField.getName();
+                        collectedFieldValues.merge(fullPathKey, valuesList, (existing, incoming) -> {
                             Set<String> merged = new LinkedHashSet<>(existing);
                             merged.addAll(incoming);
                             return List.copyOf(merged);

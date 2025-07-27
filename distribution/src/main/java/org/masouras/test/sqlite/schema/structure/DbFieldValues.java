@@ -13,7 +13,7 @@ import java.util.List;
 @J2SqlFieldValues("sqlite")
 public class DbFieldValues {
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {
-        return DbFieldAllValues.get("sqlite", forField);
+        return DbFieldAllValues.get(forField);
     }
 
     @Getter @AllArgsConstructor

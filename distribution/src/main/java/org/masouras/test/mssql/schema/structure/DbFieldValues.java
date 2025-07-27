@@ -13,7 +13,7 @@ import java.util.List;
 @J2SqlFieldValues("mssql")
 public class DbFieldValues {
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {
-        return DbFieldAllValues.get("mssql", forField);
+        return DbFieldAllValues.get(forField);
     }
 
     @Getter @AllArgsConstructor
