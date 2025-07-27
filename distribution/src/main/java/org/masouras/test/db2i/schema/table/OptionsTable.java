@@ -6,7 +6,7 @@ import org.masouras.core.PairOfTableField;
 import org.masouras.test.db2i.schema.structure.DbField;
 import org.masouras.test.db2i.schema.structure.DbTable;
 
-@J2SqlTable
+@J2SqlTable("db2i")
 public class OptionsTable extends AbstractTable {
     public OptionsTable() {
         super(DbTable.OPTIONS);

@@ -1,8 +1,10 @@
 package org.masouras.base.repo.datasource;
 
-sealed interface RepoBase<DataSourceType extends Enum<DataSourceType>>
+import org.masouras.base.datasource.DataSourceType;
+
+sealed public interface RepoBase<T extends DataSourceType>
         permits RepoBaseDB2i, RepoBaseMSSQL, RepoBaseSQLite {
-    DataSourceType getDataSourceType();
+    T getDataSourceType();
 
     @SuppressWarnings("unchecked")
     default <T extends Enum<T>> T[] getSupportedQueries() {

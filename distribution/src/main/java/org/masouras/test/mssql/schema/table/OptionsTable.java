@@ -6,7 +6,7 @@ import org.masouras.core.PairOfTableField;
 import org.masouras.test.mssql.schema.structure.DbField;
 import org.masouras.test.mssql.schema.structure.DbTable;
 
-@J2SqlTable
+@J2SqlTable("mssql")
 public class OptionsTable extends AbstractTable {
     public OptionsTable() {
         super(DbTable.OPTIONS);

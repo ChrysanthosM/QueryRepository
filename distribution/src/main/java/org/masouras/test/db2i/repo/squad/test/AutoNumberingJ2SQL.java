@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.masouras.core.J2SQLShared.MAX;
 
-@J2SqlLoader
+@J2SqlLoader("db2i")
 public class AutoNumberingJ2SQL extends AbstractJ2<AutoNumberingRepo.NameOfSQL> implements AutoNumberingRepo {
     private final AutoNumberingTable autoNumberingTable;
     @Autowired

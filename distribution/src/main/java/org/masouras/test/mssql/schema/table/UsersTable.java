@@ -6,7 +6,7 @@ import org.masouras.core.PairOfTableField;
 import org.masouras.test.mssql.schema.structure.DbField;
 import org.masouras.test.mssql.schema.structure.DbTable;
 
-@J2SqlTable
+@J2SqlTable("mssql")
 public class UsersTable extends AbstractTable {
     public UsersTable() {
         super(DbTable.USERS);

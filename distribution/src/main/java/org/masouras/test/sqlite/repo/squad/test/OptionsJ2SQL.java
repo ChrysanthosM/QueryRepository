@@ -7,7 +7,7 @@ import org.masouras.core.J2SQL;
 import org.masouras.test.sqlite.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlLoader
+@J2SqlLoader("sqlite")
 public class OptionsJ2SQL extends AbstractJ2<OptionsRepo.NameOfSQL> implements OptionsRepo {
     private final OptionsTable optionsTable;
     @Autowired

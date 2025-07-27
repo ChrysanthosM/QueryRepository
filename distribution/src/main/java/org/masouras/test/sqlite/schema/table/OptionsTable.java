@@ -6,7 +6,7 @@ import org.masouras.core.PairOfTableField;
 import org.masouras.test.sqlite.schema.structure.DbField;
 import org.masouras.test.sqlite.schema.structure.DbTable;
 
-@J2SqlTable
+@J2SqlTable("sqlite")
 public class OptionsTable extends AbstractTable {
     public OptionsTable() {
         super(DbTable.OPTIONS);

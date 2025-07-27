@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@J2SqlFieldValues
+@J2SqlFieldValues("sqlite")
 public class DbFieldValues {
     private static final ConcurrentHashMap<BaseDbField, List<String>> bufferAcceptedValues = new ConcurrentHashMap<>();
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {

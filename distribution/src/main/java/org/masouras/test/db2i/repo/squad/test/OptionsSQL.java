@@ -5,7 +5,7 @@ import org.masouras.base.repo.loader.AbstractSQL;
 import org.masouras.test.db2i.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlService
+@J2SqlService("db2i")
 public class OptionsSQL extends AbstractSQL<OptionsRepo.NameOfSQL, OptionsJ2SQL, OptionsTable> {
     @Autowired
     public OptionsSQL(OptionsJ2SQL j2sql) {

@@ -5,7 +5,7 @@ import org.masouras.base.repo.loader.AbstractSQL;
 import org.masouras.test.mssql.schema.table.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlService
+@J2SqlService("mssql")
 public class UsersSQL extends AbstractSQL<UsersRepo.NameOfSQL, UsersJ2SQL, UsersTable> {
     @Autowired
     public UsersSQL(UsersJ2SQL j2sql) {
