@@ -2,9 +2,6 @@ package org.masouras.base.builder;
 
 import lombok.Getter;
 
-import java.util.Collections;
-import java.util.List;
-
 public final class DummyALL implements BaseDbField {
     @Getter
     private static final DummyALL dummyALL = new DummyALL();
@@ -20,10 +17,6 @@ public final class DummyALL implements BaseDbField {
     @Override
     public String asAlias() {
         return null;
-    }
-    @Override
-    public List<Object> acceptedValues() {
-        return Collections.emptyList();
     }
 
     @Override

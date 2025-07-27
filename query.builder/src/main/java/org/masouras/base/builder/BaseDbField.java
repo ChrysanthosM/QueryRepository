@@ -14,12 +14,10 @@ public interface BaseDbField extends DeployFiltersBase, DeployOrderingBase, Prov
     String systemName();
     DbFieldDataType fieldDataType();
     String asAlias();
-    List<Object> acceptedValues();
 
     default String getSystemName() { return systemName(); }
     default DbFieldDataType getFieldDataType() { return fieldDataType(); }
     default String getAsAlias() { return asAlias(); }
-    default List<Object> getAcceptedValues() { return acceptedValues(); }
 
     default String getName() {
         if (this instanceof Enum<?>) {

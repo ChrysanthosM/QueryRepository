@@ -7,8 +7,6 @@ import org.masouras.base.builder.ConfigDbField;
 import org.masouras.base.builder.DbFieldDataType;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.masouras.base.builder.DbFieldDataType.DATATYPE_INTEGER;
@@ -36,21 +34,19 @@ public enum DbField implements BaseDbField {
     private final ConfigDbField configDbField;
 
     DbField(String systemName) {
-        this.configDbField = new ConfigDbField(systemName, null, null, Collections.emptyList());
+        this.configDbField = new ConfigDbField(systemName, null, null);
     }
     DbField(String systemName, DbFieldDataType fieldDataType) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
-                Arrays.stream(systemName.toLowerCase().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(StringUtils.SPACE)),
-                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
+                Arrays.stream(systemName.toLowerCase().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(StringUtils.SPACE)));
     }
     DbField(String systemName, DbFieldDataType fieldDataType, String asAlias) {
         this.configDbField = new ConfigDbField(
                 systemName,
                 fieldDataType,
-                asAlias,
-                Collections.singletonList(DbFieldValues.getAcceptedValues(this)));
+                asAlias);
     }
 
     @Override
@@ -64,10 +60,6 @@ public enum DbField implements BaseDbField {
     @Override
     public String asAlias() {
         return this.configDbField.asAlias();
-    }
-    @Override
-    public List<Object> acceptedValues() {
-        return this.configDbField.acceptedValues();
     }
 
     @Override
