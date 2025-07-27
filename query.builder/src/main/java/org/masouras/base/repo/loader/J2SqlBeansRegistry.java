@@ -1,7 +1,6 @@
 package org.masouras.base.repo.loader;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.masouras.base.annotation.J2SqlFieldValues;
@@ -27,17 +26,17 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 @Slf4j
 public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
-    private static final Set<Class<? extends Annotation>> scanAnnotations = Set.of(
+    private static final Set<Class<? extends Annotation>> createBeanAnnotations = Set.of(
             J2SqlLoader.class,
             J2SqlService.class,
-            J2SqlFieldValues.class,
             J2SqlTable.class
     );
-
 
     private Environment environment;
     @Override
@@ -48,8 +47,13 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
     @Override
     public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) throws BeansException {
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, scanAnnotations));
+        Set<Class<? extends Annotation>> extendedAnnotations = Stream.concat(
+                createBeanAnnotations.stream(),
+                Stream.of(J2SqlFieldValues.class)
+        ).collect(Collectors.toUnmodifiableSet());
+        scanner.addIncludeFilter(new J2SqlBeansTypeFilter(environment, extendedAnnotations));
 
+        List<Class<?>> createBeanClasses = new ArrayList<>();
         Map<String, List<String>> collectedFieldValues = new HashMap<>();
         for (BeanDefinition candidate : scanner.findCandidateComponents(getGroupId())) {
             String className = candidate.getBeanClassName();
@@ -57,16 +61,18 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
 
             try {
                 Class<?> clazz = Class.forName(className);
-                if (scanAnnotations.stream().noneMatch(clazz::isAnnotationPresent)) continue;
-
-                registerJ2Bean(registry, clazz);
-                processFieldValues(clazz, collectedFieldValues);
+                if (createBeanAnnotations.stream().anyMatch(clazz::isAnnotationPresent)) createBeanClasses.add(clazz);
+                if (clazz.isAnnotationPresent(J2SqlFieldValues.class)) processFieldValues(clazz, collectedFieldValues);
             } catch (ClassNotFoundException | NoClassDefFoundError e) {
                 log.error("Skipping invalid class: {}", className, e);
             }
         }
+        createBeanClasses.forEach(clazz -> registerJ2Bean(registry, clazz));
+        createBeanClasses.forEach(clazz -> processFieldValues(clazz, collectedFieldValues));
+
         collectedFieldValues.forEach(DbFieldAllValues::put);
     }
+
 
     private void processFieldValues(Class<?> clazz, Map<String, List<String>> collectedFieldValues) {
         J2SqlFieldValues valuesAnn = clazz.getAnnotation(J2SqlFieldValues.class);
@@ -118,7 +124,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
     }
 
     private @Nullable String extractSuffixFromAnnotations(Class<?> clazz) {
-        for (Class<? extends Annotation> annClass : scanAnnotations) {
+        for (Class<? extends Annotation> annClass : createBeanAnnotations) {
             Annotation ann = clazz.getAnnotation(annClass);
             if (ann != null) {
                 try {
