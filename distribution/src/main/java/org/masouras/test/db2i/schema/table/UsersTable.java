@@ -1,12 +1,12 @@
 package org.masouras.test.db2i.schema.table;
 
+import org.masouras.base.annotation.J2SqlTable;
 import org.masouras.core.AbstractTable;
 import org.masouras.core.PairOfTableField;
 import org.masouras.test.db2i.schema.structure.DbField;
 import org.masouras.test.db2i.schema.structure.DbTable;
-import org.springframework.stereotype.Component;
 
-@Component
+@J2SqlTable
 public class UsersTable extends AbstractTable {
     public UsersTable() {
         super(DbTable.USERS);

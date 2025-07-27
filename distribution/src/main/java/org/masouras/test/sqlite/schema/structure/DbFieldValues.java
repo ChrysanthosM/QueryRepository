@@ -5,16 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
+import org.masouras.base.annotation.J2SqlFieldValues;
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.core.ValueForBase;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+@J2SqlFieldValues
 public class DbFieldValues {
     private static final ConcurrentHashMap<BaseDbField, List<String>> bufferAcceptedValues = new ConcurrentHashMap<>();
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {

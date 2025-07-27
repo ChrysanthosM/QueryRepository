@@ -1,4 +1,4 @@
-package org.masouras.base.datasource;
+package org.masouras.base.datasource.provider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,12 +1,12 @@
 package org.masouras.test.mssql.repo.squad.test;
 
-import org.masouras.base.repo.GenericSQL;
+import org.masouras.base.annotation.J2SqlService;
+import org.masouras.base.repo.loader.AbstractSQL;
 import org.masouras.test.mssql.schema.table.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class UsersSQL extends GenericSQL<UsersRepo.NameOfSQL, UsersJ2SQL, UsersTable> {
+@J2SqlService
+public class UsersSQL extends AbstractSQL<UsersRepo.NameOfSQL, UsersJ2SQL, UsersTable> {
     @Autowired
     public UsersSQL(UsersJ2SQL j2sql) {
         super(j2sql);

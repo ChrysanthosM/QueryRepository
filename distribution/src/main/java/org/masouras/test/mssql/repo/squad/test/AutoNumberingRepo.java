@@ -1,6 +1,6 @@
 package org.masouras.test.mssql.repo.squad.test;
 
-import org.masouras.base.repo.RepoBaseMSSQL;
+import org.masouras.base.repo.datasource.RepoBaseMSSQL;
 
 public interface AutoNumberingRepo extends RepoBaseMSSQL {
     enum NameOfSQL {

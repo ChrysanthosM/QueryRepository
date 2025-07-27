@@ -1,4 +1,4 @@
-package org.masouras.base.repo;
+package org.masouras.base.repo.datasource;
 
 import org.masouras.base.datasource.DataSourceType;
 

@@ -14,12 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.masouras.core.J2SQLShared.*;
+import static org.masouras.core.J2SQLShared.PFX;
 
 @SpringBootTest(classes = ApplicationRun.class,
         properties = {
                 "datasource.type=sqlite",
-                "spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect"
+                "spring.jpa.database-platform=com.github.gwenn.sqlite.dialect.SQLiteDialect"
         })
 class TestSQLStatementsSQLite {
     private final DataSourceType workDataSource = DataSourceType.SQLITE;

@@ -1,5 +1,6 @@
-package org.masouras.base.datasource;
+package org.masouras.base.datasource.provider;
 
+import org.masouras.base.datasource.DataSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ public class DataSourceResolver {
     private @Autowired DataSourceProviderForMSSQL dataSourceForMSSQL;
     private @Autowired DataSourceProviderForDB2i dataSourceProviderForDB2i;
 
-    public DataSourceProvider getDefaultDataSource(DataSourceType dataSourceType) {
+    public DataSourceProvider getWorkWithDataSource(DataSourceType dataSourceType) {
         return switch (dataSourceType) {
             case SQLITE -> dataSourceForSQLite;
             case MSSQL -> dataSourceForMSSQL;

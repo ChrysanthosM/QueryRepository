@@ -2,6 +2,8 @@ package org.masouras.base.datasource;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import org.masouras.base.datasource.provider.DataSourceProvider;
+import org.masouras.base.datasource.provider.DataSourceResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +14,6 @@ public class WorkWithDataSource {
 
     private final DataSourceResolver dataSourceResolver;
     @Getter
-    private DataSourceType defaultDataSourceType;
-    @Getter
     private DataSourceProvider defaultDataSourceProvider;
 
     public WorkWithDataSource(DataSourceResolver dataSourceResolver) {
@@ -22,7 +22,6 @@ public class WorkWithDataSource {
 
     @PostConstruct
     private void init() {
-        defaultDataSourceType = DataSourceType.getByPropertyName(datasourceType);
-        defaultDataSourceProvider = dataSourceResolver.getDefaultDataSource(defaultDataSourceType);
+        defaultDataSourceProvider = dataSourceResolver.getWorkWithDataSource(DataSourceType.getByPropertyName(datasourceType));
     }
 }

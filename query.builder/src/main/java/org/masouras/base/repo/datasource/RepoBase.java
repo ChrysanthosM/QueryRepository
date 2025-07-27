@@ -1,4 +1,4 @@
-package org.masouras.base.repo;
+package org.masouras.base.repo.datasource;
 
 sealed interface RepoBase<DataSourceType extends Enum<DataSourceType>>
         permits RepoBaseDB2i, RepoBaseMSSQL, RepoBaseSQLite {

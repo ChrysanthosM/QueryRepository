@@ -1,12 +1,12 @@
 package org.masouras.test.sqlite.schema.table;
 
+import org.masouras.base.annotation.J2SqlTable;
 import org.masouras.core.AbstractTable;
 import org.masouras.core.PairOfTableField;
 import org.masouras.test.sqlite.schema.structure.DbField;
 import org.masouras.test.sqlite.schema.structure.DbTable;
-import org.springframework.stereotype.Component;
 
-@Component
+@J2SqlTable
 public class AutoNumberingTable extends AbstractTable {
     private AutoNumberingTable() {
         super(DbTable.AUTO_NUMBERING);

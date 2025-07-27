@@ -15,14 +15,14 @@ public class JdbcTemplateConfig {
 
     @Value("${sqlite.url:null}") private String sqliteUrl;
     @Bean(name = "sqliteDataSource")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "sqlite")
+    @ConditionalOnProperty(name = "datasource.type.sqlite", havingValue = "true")
     public DataSource sqliteDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(sqliteUrl);
         return dataSource;
     }
     @Bean(name = "sqliteJdbcTemplate")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "sqlite")
+    @ConditionalOnProperty(name = "datasource.type.sqlite", havingValue = "true")
     public JdbcTemplate sqliteJdbcTemplate(@Qualifier("sqliteDataSource") DataSource sqliteDataSource) {
         return new JdbcTemplate(sqliteDataSource);
     }
@@ -31,7 +31,7 @@ public class JdbcTemplateConfig {
     @Value("${mssql.username:null}") private String mssqlUsername;
     @Value("${mssql.password:null}") private String mssqlPassword;
     @Bean(name = "mssqlDataSource")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "mssql")
+    @ConditionalOnProperty(name = "datasource.type.mssql", havingValue = "true")
     public DataSource mssqlDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(mssqlUrl);
@@ -40,7 +40,7 @@ public class JdbcTemplateConfig {
         return dataSource;
     }
     @Bean(name = "mssqlJdbcTemplate")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "mssql")
+    @ConditionalOnProperty(name = "datasource.type.mssql", havingValue = "true")
     public JdbcTemplate mssqlJdbcTemplate(@Qualifier("mssqlDataSource") DataSource mssqlDataSource) {
         return new JdbcTemplate(mssqlDataSource);
     }
@@ -49,7 +49,7 @@ public class JdbcTemplateConfig {
     @Value("${db2i.username:null}") private String db2iUsername;
     @Value("${db2i.password:null}") private String db2iPassword;
     @Bean(name = "db2iDataSource")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "db2i")
+    @ConditionalOnProperty(name = "datasource.type.db2i", havingValue = "true")
     public DataSource db2iDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(db2iUrl);
@@ -58,7 +58,7 @@ public class JdbcTemplateConfig {
         return dataSource;
     }
     @Bean(name = "db2iJdbcTemplate")
-    @ConditionalOnProperty(name = "datasource.type", havingValue = "db2i")
+    @ConditionalOnProperty(name = "datasource.type.db2i", havingValue = "true")
     public JdbcTemplate db2iJdbcTemplate(@Qualifier("db2iDataSource") DataSource db2iDataSource) {
         return new JdbcTemplate(db2iDataSource);
     }

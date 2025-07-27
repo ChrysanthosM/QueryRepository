@@ -1,4 +1,4 @@
-package org.masouras.base.datasource;
+package org.masouras.base.datasource.provider;
 
 import javax.sql.DataSource;
 import java.util.Optional;

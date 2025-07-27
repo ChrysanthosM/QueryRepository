@@ -1,15 +1,12 @@
-package org.masouras.base.repo;
+package org.masouras.base.repo.loader;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.masouras.base.datasource.DataSourceType;
+import org.masouras.base.annotation.LoadJ2SQL;
 import org.masouras.core.J2SQL;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
-import static org.masouras.base.repo.LoadParams.LOAD_TIMEOUT;
+import static org.masouras.base.repo.loader.LoadJ2SQLParams.LOAD_TIMEOUT;
 
 @Log
 public abstract class AbstractJ2<E extends Enum<E>> {
@@ -31,8 +28,8 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     private final Map<E, String> bufferSQLs = new ConcurrentHashMap<>();
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
 
-    @PersistenceContext
-    private EntityManager entityManager;
+//    @PersistenceContext
+//    private EntityManager entityManager;
 
     protected AbstractJ2(Class<E> nameOfSQL) {
         this.nameOfSQL = nameOfSQL;
@@ -42,7 +39,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
-    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
+//    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
 
     @PostConstruct
     public void load() {
@@ -61,18 +58,23 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         }
         if (loadBuffers.isEmpty()) return;
 
-        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-            loadBuffers.forEach(pair -> scope.fork(() -> {
-                J2SQL j2sql = pair.getValue().get(LOAD_TIMEOUT, TimeUnit.SECONDS);
-                bufferJ2SQLs.put(pair.getKey(), j2sql);
-                bufferSQLs.put(pair.getKey(), j2sql.getSQL());
-                return null;
-            }));
-            scope.join().throwIfFailed();
-
+        List<CompletableFuture<Void>> tasks = loadBuffers.stream()
+                .map(pair -> CompletableFuture.runAsync(() -> {
+                    try {
+                        J2SQL j2sql = pair.getRight().get(LOAD_TIMEOUT, TimeUnit.SECONDS);
+                        bufferJ2SQLs.put(pair.getLeft(), j2sql);
+                        bufferSQLs.put(pair.getLeft(), j2sql.getSQL());
+                    } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                        throw new CompletionException(e);
+                    }
+                }))
+                .toList();
+        try {
+            CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+        } catch (CompletionException e) {
+            throw new RuntimeException("Error loading SQL buffers", e.getCause());
+        } finally {
             loadBuffers.clear();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
     private void invokeThis(Method m) {
