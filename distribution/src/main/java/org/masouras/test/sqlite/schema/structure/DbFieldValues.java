@@ -1,39 +1,19 @@
 package org.masouras.test.sqlite.schema.structure;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import org.apache.commons.collections4.CollectionUtils;
 import org.masouras.base.annotation.J2SqlFieldValues;
 import org.masouras.base.builder.BaseDbField;
+import org.masouras.base.repo.loader.DbFieldAllValues;
 import org.masouras.core.ValueForBase;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @J2SqlFieldValues("sqlite")
 public class DbFieldValues {
-    private static final ConcurrentHashMap<BaseDbField, List<String>> bufferAcceptedValues = new ConcurrentHashMap<>();
     public static List<String> getAcceptedValues(@NonNull BaseDbField forField) {
-        return bufferAcceptedValues.getOrDefault(forField, Collections.emptyList());
-    }
-
-    @PostConstruct
-    public void init() {
-        List<Class<?>> dbfWithValues = Arrays.asList(DbFieldValues.class.getDeclaredClasses());
-        if (CollectionUtils.isNotEmpty(dbfWithValues)) {
-            dbfWithValues.parallelStream().filter(e -> e.isEnum() && ValueForBase.class.isAssignableFrom(e)).forEach(e -> {
-                List<?> dbfValuesList = Arrays.asList(e.getEnumConstants());
-                if (CollectionUtils.isNotEmpty(dbfValuesList)) {
-                    dbfValuesList.parallelStream().forEach(dbf -> bufferAcceptedValues.put(
-                            ((ValueForBase) dbf).getForDbField(),
-                            dbfValuesList.stream().map(v -> ((ValueForBase) v).getValue()).toList()));
-                }
-            });
-        }
+        return DbFieldAllValues.get("sqlite", forField);
     }
 
     @Getter @AllArgsConstructor
