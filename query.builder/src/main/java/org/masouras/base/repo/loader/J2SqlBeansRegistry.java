@@ -68,30 +68,21 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
             }
         }
         createBeanClasses.forEach(clazz -> registerJ2Bean(registry, clazz));
-        createBeanClasses.forEach(clazz -> processFieldValues(clazz, collectedFieldValues));
-
         collectedFieldValues.forEach(DbFieldAllValues::put);
     }
 
 
     private void processFieldValues(Class<?> clazz, Map<String, List<String>> collectedFieldValues) {
-        J2SqlFieldValues valuesAnn = clazz.getAnnotation(J2SqlFieldValues.class);
-        if (valuesAnn != null) {
+        for (Class<?> innerClass : clazz.getDeclaredClasses()) {
+            if (innerClass.isEnum() && ValueForBase.class.isAssignableFrom(innerClass)) {
+                for (Object constant : innerClass.getEnumConstants()) {
+                    ValueForBase vfb = (ValueForBase) constant;
+                    String value = vfb.getValue();
+                    BaseDbField dbField = vfb.getForDbField();
 
-            for (Class<?> innerClass : clazz.getDeclaredClasses()) {
-                if (innerClass.isEnum() && ValueForBase.class.isAssignableFrom(innerClass)) {
-                    List<String> valuesList = new ArrayList<>();
-                    BaseDbField dbField = null;
-
-                    for (Object constant : innerClass.getEnumConstants()) {
-                        ValueForBase vfb = (ValueForBase) constant;
-                        valuesList.add(vfb.getValue());
-                        dbField = vfb.getForDbField();
-                    }
-
-                    if (dbField != null) {
-                        String fullPathKey = dbField.getClass().getCanonicalName() + "." + dbField.getName();
-                        collectedFieldValues.merge(fullPathKey, valuesList, (existing, incoming) -> {
+                    if (value != null && dbField != null) {
+                        String key = dbField.getClass().getCanonicalName() + "." + dbField.getName();
+                        collectedFieldValues.merge(key, List.of(value), (existing, incoming) -> {
                             Set<String> merged = new LinkedHashSet<>(existing);
                             merged.addAll(incoming);
                             return List.copyOf(merged);
@@ -101,6 +92,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
             }
         }
     }
+
 
     private void registerJ2Bean(@NotNull BeanDefinitionRegistry registry, Class<?> clazz) {
         String baseBeanName = Introspector.decapitalize(clazz.getSimpleName());
