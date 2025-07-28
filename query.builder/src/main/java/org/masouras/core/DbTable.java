@@ -26,7 +26,7 @@ abstract sealed class DbTable implements DbTableBase permits AbstractTable {
     private DbTableInfo dbTableInfo = null;
 
     @PostConstruct
-    private void loadTableInfo() {
+    private void init() {
         dbTableInfo = new DbTableInfo(this);
     }
 

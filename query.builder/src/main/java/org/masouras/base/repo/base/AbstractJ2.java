@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
-import static org.masouras.base.repo.base.LoadJ2SQLParams.LOAD_TIMEOUT;
-
 @Slf4j
 public abstract class AbstractJ2<E extends Enum<E>> {
+    private static final int LOAD_TIMEOUT = 10; // seconds
+
     @Getter(AccessLevel.PRIVATE) private final Class<E> nameOfSQL;
 
     private final Map<E, J2SQL> bufferJ2SQLs = new ConcurrentHashMap<>();
@@ -34,20 +34,21 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         this.nameOfSQL = nameOfSQL;
     }
 
-    protected void addLoader(E nameOfSQL, J2SQL j2SQL) { loadBuffers.add(Pair.of(nameOfSQL, CompletableFuture.supplyAsync(() -> j2SQL))); }
-
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
 //    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
 
     @PostConstruct
-    public void load() {
+    public void init() {
         long startLoadingTime = System.currentTimeMillis();
-        loadBuffers();
+        load();
         long loadingTime = System.currentTimeMillis() - startLoadingTime;
         log.info("{} loaded in {}", this.getClass().getSimpleName(), loadingTime);
     }
-
+    private void load() {
+        loadBuffers();
+        awaitLoaders();
+    }
     private void loadBuffers() {
         List<Method> loaders = Arrays.stream(this.getClass().getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(LoadJ2SQL.class))
@@ -55,6 +56,17 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         if (CollectionUtils.isNotEmpty(loaders)) {
             loaders.parallelStream().forEach(this::invokeThis);
         }
+    }
+    private void invokeThis(Method m) {
+        try {
+            m.invoke(this);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    protected void addLoader(E nameOfSQL, J2SQL j2SQL) { loadBuffers.add(Pair.of(nameOfSQL, CompletableFuture.supplyAsync(() -> j2SQL))); }
+
+    private void awaitLoaders() {
         if (loadBuffers.isEmpty()) return;
 
         List<CompletableFuture<Void>> tasks = loadBuffers.stream()
@@ -76,11 +88,5 @@ public abstract class AbstractJ2<E extends Enum<E>> {
             loadBuffers.clear();
         }
     }
-    private void invokeThis(Method m) {
-        try {
-            m.invoke(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }
