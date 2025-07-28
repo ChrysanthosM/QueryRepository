@@ -42,8 +42,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     public void init() {
         long startLoadingTime = System.currentTimeMillis();
         load();
-        long loadingTime = System.currentTimeMillis() - startLoadingTime;
-        log.info("{} loaded in {}", this.getClass().getSimpleName(), loadingTime);
+        if (log.isInfoEnabled()) log.info("{} loaded in {}", this.getClass().getSimpleName(), System.currentTimeMillis() - startLoadingTime);
     }
     private void load() {
         loadBuffers();
