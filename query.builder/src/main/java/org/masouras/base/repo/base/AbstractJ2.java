@@ -39,7 +39,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 //    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         long startLoadingTime = System.currentTimeMillis();
         load();
         if (log.isInfoEnabled()) log.info("{} loaded in {}", this.getClass().getSimpleName(), System.currentTimeMillis() - startLoadingTime);
@@ -87,5 +87,4 @@ public abstract class AbstractJ2<E extends Enum<E>> {
             loadBuffers.clear();
         }
     }
-
 }
