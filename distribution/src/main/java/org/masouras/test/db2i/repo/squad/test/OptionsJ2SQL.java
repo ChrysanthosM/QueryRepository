@@ -2,6 +2,7 @@ package org.masouras.test.db2i.repo.squad.test;
 
 import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
+import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.repo.base.AbstractJ2;
 import org.masouras.core.J2SQL;
 import org.masouras.test.db2i.schema.table.OptionsTable;
@@ -12,7 +13,7 @@ public class OptionsJ2SQL extends AbstractJ2<OptionsRepo.NameOfSQL> implements O
     private final OptionsTable optionsTable;
     @Autowired
     private OptionsJ2SQL(OptionsTable optionsTable) {
-        super(NameOfSQL.class);
+        super(NameOfSQL.class, DataSourceType.DB2_I);
         this.optionsTable = optionsTable;
     }
 

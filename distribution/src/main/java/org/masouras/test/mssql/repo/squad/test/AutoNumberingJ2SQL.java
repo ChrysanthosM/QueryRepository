@@ -2,6 +2,7 @@ package org.masouras.test.mssql.repo.squad.test;
 
 import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
+import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.repo.base.AbstractJ2;
 import org.masouras.core.J2SQL;
 import org.masouras.test.mssql.schema.table.AutoNumberingTable;
@@ -14,7 +15,7 @@ public class AutoNumberingJ2SQL extends AbstractJ2<AutoNumberingRepo.NameOfSQL> 
     private final AutoNumberingTable autoNumberingTable;
     @Autowired
     private AutoNumberingJ2SQL(AutoNumberingTable autoNumberingTable) {
-        super(NameOfSQL.class);
+        super(NameOfSQL.class, DataSourceType.MSSQL);
         this.autoNumberingTable = autoNumberingTable;
     }
 

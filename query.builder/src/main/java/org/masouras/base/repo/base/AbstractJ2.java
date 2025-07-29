@@ -1,13 +1,18 @@
 package org.masouras.base.repo.base;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.masouras.base.annotation.LoadJ2SQL;
+import org.masouras.base.datasource.DataSourceType;
+import org.masouras.base.datasource.EntityManagerResolver;
 import org.masouras.core.J2SQL;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,24 +27,28 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     private static final int LOAD_TIMEOUT = 10; // seconds
 
     @Getter(AccessLevel.PRIVATE) private final Class<E> nameOfSQL;
+    private final DataSourceType dataSourceType;
 
     private final Map<E, J2SQL> bufferJ2SQLs = new ConcurrentHashMap<>();
     private final Map<E, String> bufferSQLs = new ConcurrentHashMap<>();
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
 
-//    @PersistenceContext
-//    private EntityManager entityManager;
+    private EntityManager entityManager;
+    private @Autowired EntityManagerResolver entityManagerResolver;
 
-    protected AbstractJ2(Class<E> nameOfSQL) {
+    protected AbstractJ2(Class<E> nameOfSQL, DataSourceType dataSourceType) {
         this.nameOfSQL = nameOfSQL;
+        this.dataSourceType = dataSourceType;
     }
 
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
-//    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
+    public <T> Query getQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
 
     @PostConstruct
     private void init() {
+        this.entityManager = entityManagerResolver.getEntityManager(dataSourceType);
+
         long startLoadingTime = System.currentTimeMillis();
         load();
         if (log.isInfoEnabled()) log.info("{} loaded in {}", this.getClass().getSimpleName(), System.currentTimeMillis() - startLoadingTime);
