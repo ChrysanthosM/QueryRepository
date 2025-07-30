@@ -8,9 +8,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EntityManagerResolver {
-    private @Autowired @Qualifier("sqliteEntityManager") ObjectProvider<EntityManager> sqliteEntityManager;
-    private @Autowired @Qualifier("mssqlEntityManager") ObjectProvider<EntityManager> mssqlEntityManager;
-    private @Autowired @Qualifier("db2iEntityManager") ObjectProvider<EntityManager> db2iEntityManager;
+    private final ObjectProvider<EntityManager> sqliteEntityManager;
+    private final ObjectProvider<EntityManager> mssqlEntityManager;
+    private final ObjectProvider<EntityManager> db2iEntityManager;
+
+    @Autowired
+    public EntityManagerResolver(@Qualifier("sqliteEntityManager") ObjectProvider<EntityManager> sqliteEntityManager,
+                                 @Qualifier("mssqlEntityManager") ObjectProvider<EntityManager> mssqlEntityManager,
+                                 @Qualifier("db2iEntityManager") ObjectProvider<EntityManager> db2iEntityManager) {
+        this.sqliteEntityManager = sqliteEntityManager;
+        this.mssqlEntityManager = mssqlEntityManager;
+        this.db2iEntityManager = db2iEntityManager;
+    }
 
     public EntityManager getEntityManager(DataSourceType type) {
         return switch (type) {
