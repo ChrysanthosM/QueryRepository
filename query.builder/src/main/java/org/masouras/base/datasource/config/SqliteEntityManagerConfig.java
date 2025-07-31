@@ -25,10 +25,11 @@ import java.util.Map;
         entityManagerFactoryRef = "sqliteEntityManagerFactory",
         transactionManagerRef = "sqliteTransactionManager"
 )
-public class SqliteEntityManagerConfig {
+public non-sealed class SqliteEntityManagerConfig implements BaseEntityManagerConfig {
 
     @Bean(name = "sqliteEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean sqliteEntityManagerFactory(@Qualifier("sqliteDataSource") DataSource dataSource) {
+    @Override
+    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(@Qualifier("sqliteDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setPackagesToScan("org.masouras");
@@ -43,12 +44,14 @@ public class SqliteEntityManagerConfig {
     }
 
     @Bean(name = "sqliteTransactionManager")
-    public PlatformTransactionManager sqliteTransactionManager(@Qualifier("sqliteEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public PlatformTransactionManager getPlatformTransactionManager(@Qualifier("sqliteEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
     @Bean(name = "sqliteEntityManager")
-    public EntityManager sqliteEntityManager(@Qualifier("sqliteEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public EntityManager getEntityManager(@Qualifier("sqliteEntityManagerFactory") EntityManagerFactory emf) {
         return emf.createEntityManager();
     }
 }

@@ -25,10 +25,11 @@ import java.util.Map;
         entityManagerFactoryRef = "db2iEntityManagerFactory",
         transactionManagerRef = "db2iTransactionManager"
 )
-public class Db2iEntityManagerConfig {
+public non-sealed class Db2iEntityManagerConfig implements BaseEntityManagerConfig {
 
     @Bean(name = "db2iEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean db2iEntityManagerFactory(@Qualifier("db2iDataSource") DataSource dataSource) {
+    @Override
+    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(@Qualifier("db2iDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setPackagesToScan("org.masouras");
@@ -43,12 +44,14 @@ public class Db2iEntityManagerConfig {
     }
 
     @Bean(name = "db2iTransactionManager")
-    public PlatformTransactionManager db2iTransactionManager(@Qualifier("db2iEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public PlatformTransactionManager getPlatformTransactionManager(@Qualifier("db2iEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
     @Bean(name = "db2iEntityManager")
-    public EntityManager db2iEntityManager(@Qualifier("db2iEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public EntityManager getEntityManager(@Qualifier("db2iEntityManagerFactory") EntityManagerFactory emf) {
         return emf.createEntityManager();
     }
 }

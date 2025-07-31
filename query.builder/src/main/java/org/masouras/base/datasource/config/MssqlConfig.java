@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.mssql", havingValue = "true")
-public class MssqlConfig {
+public non-sealed class MssqlConfig implements BaseConfig {
     @Value("${mssql.url:null}")
     private String mssqlUrl;
 
@@ -22,7 +22,8 @@ public class MssqlConfig {
     private String mssqlPassword;
 
     @Bean(name = "mssqlDataSource")
-    public DataSource mssqlDataSource() {
+    @Override
+    public DataSource getDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(mssqlUrl);
         dataSource.setUsername(mssqlUsername);
@@ -31,8 +32,9 @@ public class MssqlConfig {
     }
 
     @Bean(name = "mssqlJdbcTemplate")
-    public JdbcTemplate mssqlJdbcTemplate(@Qualifier("mssqlDataSource") DataSource mssqlDataSource) {
-        return new JdbcTemplate(mssqlDataSource);
+    @Override
+    public JdbcTemplate getJdbcTemplate(@Qualifier("mssqlDataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }
 

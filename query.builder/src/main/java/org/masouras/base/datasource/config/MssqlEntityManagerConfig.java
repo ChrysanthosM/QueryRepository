@@ -25,10 +25,11 @@ import java.util.Map;
         entityManagerFactoryRef = "mssqlEntityManagerFactory",
         transactionManagerRef = "mssqlTransactionManager"
 )
-public class MssqlEntityManagerConfig {
+public non-sealed class MssqlEntityManagerConfig implements BaseEntityManagerConfig {
 
     @Bean(name = "mssqlEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean mssqlEntityManagerFactory(@Qualifier("mssqlDataSource") DataSource dataSource) {
+    @Override
+    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(@Qualifier("mssqlDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setPackagesToScan("org.masouras");
@@ -43,12 +44,14 @@ public class MssqlEntityManagerConfig {
     }
 
     @Bean(name = "mssqlTransactionManager")
-    public PlatformTransactionManager mssqlTransactionManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public PlatformTransactionManager getPlatformTransactionManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
     @Bean(name = "mssqlEntityManager")
-    public EntityManager mssqlEntityManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
+    @Override
+    public EntityManager getEntityManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
         return emf.createEntityManager();
     }
 }

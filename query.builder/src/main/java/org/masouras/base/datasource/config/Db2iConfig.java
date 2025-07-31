@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.db2i", havingValue = "true")
-public class Db2iConfig {
+public non-sealed class Db2iConfig implements BaseConfig {
     @Value("${db2i.url:null}")
     private String db2iUrl;
 
@@ -22,7 +22,8 @@ public class Db2iConfig {
     private String db2iPassword;
 
     @Bean(name = "db2iDataSource")
-    public DataSource db2iDataSource() {
+    @Override
+    public DataSource getDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(db2iUrl);
         dataSource.setUsername(db2iUsername);
@@ -31,7 +32,8 @@ public class Db2iConfig {
     }
 
     @Bean(name = "db2iJdbcTemplate")
-    public JdbcTemplate db2iJdbcTemplate(@Qualifier("db2iDataSource") DataSource db2iDataSource) {
+    @Override
+    public JdbcTemplate getJdbcTemplate(@Qualifier("db2iDataSource") DataSource db2iDataSource) {
         return new JdbcTemplate(db2iDataSource);
     }
 }

@@ -12,19 +12,21 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.sqlite", havingValue = "true")
-public class SqliteConfig {
+public non-sealed class SqliteConfig implements BaseConfig {
     @Value("${sqlite.url:null}")
     private String sqliteUrl;
 
     @Bean(name = "sqliteDataSource")
-    public DataSource sqliteDataSource() {
+    @Override
+    public DataSource getDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(sqliteUrl);
         return dataSource;
     }
 
     @Bean(name = "sqliteJdbcTemplate")
-    public JdbcTemplate sqliteJdbcTemplate(@Qualifier("sqliteDataSource") DataSource sqliteDataSource) {
+    @Override
+    public JdbcTemplate getJdbcTemplate(@Qualifier("sqliteDataSource") DataSource sqliteDataSource) {
         return new JdbcTemplate(sqliteDataSource);
     }
 }
