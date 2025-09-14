@@ -1,20 +1,22 @@
 package org.masouras;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
-import org.masouras.test.db2i.schema.structure.DbFieldValues;
-import org.masouras.test.db2i.schema.table.AutoNumberingTable;
-import org.masouras.test.db2i.schema.table.OptionsTable;
+import org.masouras.sample.db2i.schema.structure.DbFieldValues;
+import org.masouras.sample.db2i.schema.table.AutoNumberingTable;
+import org.masouras.sample.db2i.schema.table.OptionsTable;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.masouras.core.J2SQLShared.PFX;
 
+@Beta //This test will fail
 @SpringBootTest(classes = ApplicationRun.class,
         properties = {
                 "datasource.type=db2i",

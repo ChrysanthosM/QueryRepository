@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
-import org.masouras.test.sqlite.schema.structure.DbFieldValues;
-import org.masouras.test.sqlite.schema.table.AutoNumberingTable;
-import org.masouras.test.sqlite.schema.table.OptionsTable;
+import org.masouras.sample.sqlite.schema.structure.DbFieldValues;
+import org.masouras.sample.sqlite.schema.table.AutoNumberingTable;
+import org.masouras.sample.sqlite.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
