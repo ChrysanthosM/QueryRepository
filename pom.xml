@@ -12,7 +12,7 @@
   <modules>
     <module>query.builder</module>
     <module>distribution</module>
-    <module>test</module>
+    <module>sample</module>
   </modules>
 
   <build>
