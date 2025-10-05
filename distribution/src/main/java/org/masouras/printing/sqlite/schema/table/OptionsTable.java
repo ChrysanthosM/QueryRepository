@@ -19,5 +19,5 @@ public class OptionsTable extends AbstractTable {
     public final PairOfTableField OPTION_VALUE = getPairOfTableField(DbField.OPTION_VALUE);
     public final PairOfTableField OPTION_DETAILS = getPairOfTableField(DbField.OPTION_DETAILS);
     public final PairOfTableField USER_STAMP = getPairOfTableField(DbField.USER_STAMP);
-    public final PairOfTableField DATE_STAMP = getPairOfTableField(DbField.DATE_STAMP);
+    public final PairOfTableField DATE_STAMP = getPairOfTableField(DbField.CURRENT_TIMESTAMP);
 }

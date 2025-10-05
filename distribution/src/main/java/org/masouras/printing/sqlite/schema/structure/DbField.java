@@ -15,6 +15,8 @@ import static org.masouras.base.builder.DbFieldDataType.DATATYPE_TEXT;
 @Getter
 public enum DbField implements BaseDbField {
     REC_ID("ID", DATATYPE_INTEGER),
+    CURRENT_TIMESTAMP("CURRENT_TIMESTAMP", DATATYPE_TEXT),
+
     ACTIVITY_ID("ACTIVITY_ID", DATATYPE_INTEGER),
     USER_STAMP("USER_STAMP", DATATYPE_TEXT),
     DATE_STAMP("DATE_STAMP", DATATYPE_TEXT),
@@ -27,6 +29,8 @@ public enum DbField implements BaseDbField {
 
     CONTENT_BASE64("CONTENT_BASE64", DATATYPE_TEXT),
     CONTENT_TYPE("CONTENT_TYPE", DATATYPE_TEXT),
+
+    ACTIVITY_TYPE("ACTIVITY_TYPE", DATATYPE_TEXT),
 
     ;
 
