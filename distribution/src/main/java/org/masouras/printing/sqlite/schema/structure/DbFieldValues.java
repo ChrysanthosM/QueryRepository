@@ -22,4 +22,12 @@ public class DbFieldValues {
         private final String value;
     }
 
+    @Getter @AllArgsConstructor
+    public enum ValuesForActivityType implements ValueForBase {
+        QUOTE("10001"), ISSUE("10002"), MODIFICATION("10003"), CANCELLATION("10004");
+        private final DbField forDbField = DbField.ACTIVITY_TYPE;
+        private final String value;
+    }
+
+
 }
