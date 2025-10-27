@@ -1,5 +1,6 @@
 package org.masouras.base.repo.base;
 
+import jakarta.persistence.Query;
 import org.masouras.core.J2SQL;
 
 public abstract class AbstractSQL<R extends Enum<R>, J extends AbstractJ2<R>, T> {
@@ -16,9 +17,10 @@ public abstract class AbstractSQL<R extends Enum<R>, J extends AbstractJ2<R>, T>
         return j2sql.getJ2SQL(nameOfSQL);
     }
 
-//    public Query getQuery(R nameOfSQL, Class<T> tableClass) {
-//        return j2sql.getQuery(nameOfSQL, tableClass);
-//    }
+    public Query getNativeQuery(R nameOfSQL, Class<T> resultClass) {
+        return j2sql.getNativeQuery(nameOfSQL, resultClass);
+    }
+
 }
 
 

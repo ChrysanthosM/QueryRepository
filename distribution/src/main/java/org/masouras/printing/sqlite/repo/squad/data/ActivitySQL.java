@@ -6,9 +6,9 @@ import org.masouras.printing.sqlite.schema.table.ActivityTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @J2SqlService("sqlite")
-public class ActivityDataSQL extends AbstractSQL<ActivityRepo.NameOfSQL, ActivityJ2SQL, ActivityTable> {
+public class ActivitySQL extends AbstractSQL<ActivityRepo.NameOfSQL, ActivityJ2SQL, ActivityTable> {
     @Autowired
-    public ActivityDataSQL(ActivityJ2SQL j2sql) {
+    public ActivitySQL(ActivityJ2SQL j2sql) {
         super(j2sql);
     }
 }
