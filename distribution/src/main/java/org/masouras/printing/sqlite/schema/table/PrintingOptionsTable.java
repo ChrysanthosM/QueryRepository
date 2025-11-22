@@ -7,9 +7,9 @@ import org.masouras.printing.sqlite.schema.structure.DbField;
 import org.masouras.printing.sqlite.schema.structure.DbTable;
 
 @J2SqlTable("sqlite")
-public class OptionsTable extends AbstractTable {
-    public OptionsTable() {
-        super(DbTable.OPTIONS);
+public class PrintingOptionsTable extends AbstractTable {
+    public PrintingOptionsTable() {
+        super(DbTable.PRINTING_OPTIONS);
         setDbFs(REC_ID, OPTION_TYPE, OPTION_NAME, OPTION_VALUE, OPTION_DETAILS);
     }
 
