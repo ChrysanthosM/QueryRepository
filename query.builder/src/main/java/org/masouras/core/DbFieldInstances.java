@@ -34,9 +34,4 @@ public class DbFieldInstances {
                 .parallel()
                 .forEach(f -> mapFieldInstances.put(f, new DbField(f)));
     }
-
-    protected DbField getDbField(BaseDbField forDbF) {
-        return getInstance(forDbF);
-    }
-
 }

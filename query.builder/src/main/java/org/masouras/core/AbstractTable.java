@@ -1,11 +1,9 @@
 package org.masouras.core;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.BaseDbTable;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

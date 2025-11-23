@@ -8,6 +8,7 @@ import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.J2SqlService;
 import org.masouras.base.annotation.J2SqlTable;
 import org.masouras.base.builder.BaseDbField;
+import org.masouras.core.DbFieldInstances;
 import org.masouras.core.ValueForBase;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -18,8 +19,6 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import java.beans.Introspector;
@@ -103,6 +102,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
 
         GenericBeanDefinition definition = new GenericBeanDefinition();
         definition.setBeanClass(clazz);
+        definition.setDependsOn(Introspector.decapitalize(DbFieldInstances.class.getSimpleName()));
         registry.registerBeanDefinition(newBeanName, definition);
     }
 
