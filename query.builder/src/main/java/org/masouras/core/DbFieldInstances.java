@@ -16,6 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class DbFieldInstances {
     private static final Map<BaseDbField, DbField> mapFieldInstances = new ConcurrentHashMap<>();
+    static DbField getInstance(BaseDbField forDbF) {
+        return mapFieldInstances.getOrDefault(forDbF, null);
+    }
 
     @PostConstruct
     public void init() {
@@ -32,7 +35,8 @@ public class DbFieldInstances {
                 .forEach(f -> mapFieldInstances.put(f, new DbField(f)));
     }
 
-    static DbField getInstance(BaseDbField forDbF) {
-        return mapFieldInstances.getOrDefault(forDbF, null);
+    protected DbField getDbField(BaseDbField forDbF) {
+        return getInstance(forDbF);
     }
+
 }

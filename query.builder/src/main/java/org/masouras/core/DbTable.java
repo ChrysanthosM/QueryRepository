@@ -7,6 +7,7 @@ import lombok.NonNull;
 import org.apache.commons.lang3.tuple.Pair;
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.BaseDbTable;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ abstract sealed class DbTable implements DbTableBase permits AbstractTable {
     protected abstract List<PairOfTableField> getDbFs();
 
     private DbTableInfo dbTableInfo = null;
+
+    private @Autowired DbFieldInstances dbFieldInstances;
 
     @PostConstruct
     private void init() {

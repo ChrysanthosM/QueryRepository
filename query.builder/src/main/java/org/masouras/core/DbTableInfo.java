@@ -56,7 +56,7 @@ final class DbTableInfo {
         this.dbtHasFieldsPrefix = dbTable.getTablePrefixForFields();
         this.dbtHasDbFieldNamesEnum = new ArrayList<>(dbTable.getDbFs().stream().map(PairOfTableField::getBaseDbField).toList());
 
-        this.dbtHasDbFields = new ArrayList<>(this.dbtHasDbFieldNamesEnum.stream().map(DbFieldInstances::getInstance).toList());
+        this.dbtHasDbFields = new ArrayList<>(this.dbtHasDbFieldNamesEnum.stream().map(dbt -> dbTable.getDbFieldInstances().getDbField(dbt)).toList());
         this.dbtHasFieldsNormalNames = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfNormalName).toList());
         this.dbtHasFieldsSystemNames = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfSystemName).toList());
         this.dbtHasFieldsAsAlias = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfAsAlias).toList());

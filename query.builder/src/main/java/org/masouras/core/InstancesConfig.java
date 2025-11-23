@@ -1,14 +1,20 @@
 package org.masouras.core;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 @Configuration
-@RequiredArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @SuppressWarnings("unused")
 public class InstancesConfig {
-    @SuppressWarnings("unused")
     private final DbFieldInstances dbFieldInstances;
-    @SuppressWarnings("unused")
     private final DbTableInstances dbTableInstances;
+
+    @Autowired
+    public InstancesConfig(DbFieldInstances dbFieldInstances, DbTableInstances dbTableInstances) {
+        this.dbFieldInstances = dbFieldInstances;
+        this.dbTableInstances = dbTableInstances;
+    }
 }

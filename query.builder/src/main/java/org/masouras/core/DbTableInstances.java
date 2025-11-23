@@ -12,19 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class DbTableInstances {
     private static final Map<BaseDbTable, DbTable> mapTableInstances = new ConcurrentHashMap<>();
+    static DbTable getInstance(BaseDbTable forDbT) {
+        return mapTableInstances.getOrDefault(forDbT, null);
+    }
+
     private final List<DbTableBase> implementations;
 
     @Autowired
     private DbTableInstances(List<DbTableBase> implementations) {
         this.implementations = List.copyOf(implementations);
     }
+
     @PostConstruct
     public void init() {
         this.implementations.parallelStream().forEach(dbT -> mapTableInstances.put(((DbTable) dbT).getBaseDbTable(), (DbTable) dbT));
-    }
-
-
-    static DbTable getInstance(BaseDbTable forDbT) {
-        return mapTableInstances.getOrDefault(forDbT, null);
     }
 }
