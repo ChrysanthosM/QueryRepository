@@ -5,6 +5,7 @@ import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.BaseDbTable;
 import org.masouras.base.builder.DbFieldDataType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +54,14 @@ final class DbTableInfo {
         this.dbtDateStampDbF = this.dbtNameEnum.getDateStampDbF();
 
         this.dbtHasFieldsPrefix = dbTable.getTablePrefixForFields();
-        this.dbtHasDbFieldNamesEnum = dbTable.getDbFs().stream().map(PairOfTableField::getBaseDbField).toList();
+        this.dbtHasDbFieldNamesEnum = new ArrayList<>(dbTable.getDbFs().stream().map(PairOfTableField::getBaseDbField).toList());
 
-        this.dbtHasDbFields = this.dbtHasDbFieldNamesEnum.stream().map(DbFieldInstances::getInstance).toList();
-        this.dbtHasFieldsNormalNames = this.dbtHasDbFields.stream().map(DbField::getDbfNormalName).toList();
-        this.dbtHasFieldsSystemNames = this.dbtHasDbFields.stream().map(DbField::getDbfSystemName).toList();
-        this.dbtHasFieldsAsAlias = this.dbtHasDbFields.stream().map(DbField::getDbfAsAlias).toList();
-        this.dbtHasFieldsDataType = this.dbtHasDbFields.stream().map(DbField::getDbfDataType).toList();
-        this.dbtHasInQuotesRequirement = this.dbtHasDbFields.stream().map(DbField::getDbfInQuotesRequirement).toList();
+        this.dbtHasDbFields = new ArrayList<>(this.dbtHasDbFieldNamesEnum.stream().map(DbFieldInstances::getInstance).toList());
+        this.dbtHasFieldsNormalNames = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfNormalName).toList());
+        this.dbtHasFieldsSystemNames = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfSystemName).toList());
+        this.dbtHasFieldsAsAlias = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfAsAlias).toList());
+        this.dbtHasFieldsDataType = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfDataType).toList());
+        this.dbtHasInQuotesRequirement = new ArrayList<>(this.dbtHasDbFields.stream().map(DbField::getDbfInQuotesRequirement).toList());
 
         this.dbtHasFieldsNameEnumNormalName = Map.copyOf((Map<? extends BaseDbField, String>)
                 IntStream.range(0, this.dbtHasDbFieldNamesEnum.size()).boxed()
