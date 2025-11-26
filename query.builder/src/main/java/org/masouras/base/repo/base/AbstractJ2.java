@@ -44,6 +44,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
     public <T> Query getNativeQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
+    public Query getNativeQuery(E nameOfSQL) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null)); }
 
     @PostConstruct
     private void init() {
