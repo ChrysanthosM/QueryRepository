@@ -21,6 +21,9 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class AbstractJ2<E extends Enum<E>> {
@@ -31,6 +34,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 
     private final Map<E, J2SQL> bufferJ2SQLs = new ConcurrentHashMap<>();
     private final Map<E, String> bufferSQLs = new ConcurrentHashMap<>();
+    private final Map<E, String> bufferPositionalSQLs = new ConcurrentHashMap<>();
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
 
     private EntityManager entityManager;
@@ -43,8 +47,8 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
-    public <T> Query getNativeQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null), resultClass); }
-    public Query getNativeQuery(E nameOfSQL) { return entityManager.createNativeQuery(bufferSQLs.getOrDefault(nameOfSQL, null)); }
+    public <T> Query getNativeQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null), resultClass); }
+    public Query getNativeQuery(E nameOfSQL) { return entityManager.createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null)); }
 
     @PostConstruct
     private void init() {
@@ -91,6 +95,25 @@ public abstract class AbstractJ2<E extends Enum<E>> {
                 .toList();
         try {
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+
+            bufferPositionalSQLs.putAll(
+                    bufferSQLs.entrySet().stream()
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    e -> {
+                                        Matcher m = Pattern.compile("\\?").matcher(e.getValue());
+                                        StringBuffer sb = new StringBuffer();
+                                        int counter = 1;
+                                        while (m.find()) {
+                                            m.appendReplacement(sb, "?" + counter++);
+                                        }
+                                        m.appendTail(sb);
+                                        return sb.toString();
+                                    }
+                            ))
+            );
+
+
         } catch (CompletionException e) {
             throw new RuntimeException("Error loading SQL buffers", e.getCause());
         } finally {
