@@ -1,7 +1,10 @@
 package org.masouras.printing.sqlite.schema.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.masouras.printing.sqlite.schema.control.ActivityType;
+import org.masouras.printing.sqlite.schema.control.ActivityTypeConverter;
 
 import java.time.LocalDateTime;
 
@@ -9,22 +12,28 @@ import java.time.LocalDateTime;
 @Table(name = "ActivityTable")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ActivityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Convert(converter = ActivityTypeConverter.class)
     @Column(name = "ACTIVITY_TYPE", nullable = false, length = 5)
-    private String activityType;
+    private ActivityType activityType;
 
-    @Column(name = "PGM_STAMP")
+    @NonNull
+    @Column(name = "PGM_STAMP", nullable = false)
     private String pgmStamp;
 
-    @Column(name = "USER_STAMP")
+    @NonNull
+    @Column(name = "USER_STAMP", nullable = false)
     private String userStamp;
 
-    @Column(name = "DATE_STAMP")
+    @NonNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss:SSSS")
+    @Column(name = "DATE_STAMP", nullable = false)
     private LocalDateTime dateStamp;
 }
 
