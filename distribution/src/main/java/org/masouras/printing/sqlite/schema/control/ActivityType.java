@@ -17,7 +17,7 @@ public enum ActivityType {
     private final String code;
 
     private static final Map<String, ActivityType> CODE_MAP = Arrays.stream(values()).collect(Collectors.toMap(ActivityType::getCode, e -> e));
-    public static ActivityType fromCode(@Nullable String code) {
+    public static ActivityType getFromCode(@Nullable String code) {
         return StringUtils.isBlank(code) ? null : CODE_MAP.getOrDefault(code, null);
     }
 }

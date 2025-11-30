@@ -19,7 +19,7 @@ public enum ContentType {
 
     private static final Map<String, ContentType> CODE_MAP = Arrays.stream(values()).collect(Collectors.toMap(ContentType::getCode, e -> e));
     private static final Map<String, ContentType> STARTS_WITH_MAP = Arrays.stream(values()).collect(Collectors.toMap(ContentType::getStartsWith, e -> e));
-    public static ContentType fromCode(@Nullable String code) {
+    public static ContentType getFromCode(@Nullable String code) {
         return StringUtils.isBlank(code) ? null : CODE_MAP.getOrDefault(code, null);
     }
     public static ContentType fromStartsWith(@Nullable String startsWith) {

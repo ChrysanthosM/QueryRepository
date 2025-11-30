@@ -13,6 +13,6 @@ public class ActivityTypeConverter implements AttributeConverter<ActivityType, S
 
     @Override
     public ActivityType convertToEntityAttribute(String dbData) {
-        return ActivityType.fromCode(dbData);
+        return ActivityType.getFromCode(dbData);
     }
 }

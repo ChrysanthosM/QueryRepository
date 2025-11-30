@@ -13,6 +13,6 @@ public class ContentTypeConverter implements AttributeConverter<ContentType, Str
 
     @Override
     public ContentType convertToEntityAttribute(String dbData) {
-        return ContentType.fromCode(dbData);
+        return ContentType.getFromCode(dbData);
     }
 }
