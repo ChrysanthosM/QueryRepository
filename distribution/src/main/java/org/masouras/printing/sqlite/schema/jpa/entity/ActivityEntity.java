@@ -1,10 +1,10 @@
-package org.masouras.printing.sqlite.schema.entity;
+package org.masouras.printing.sqlite.schema.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.masouras.printing.sqlite.schema.control.ActivityType;
-import org.masouras.printing.sqlite.schema.control.ActivityTypeConverter;
+import org.masouras.printing.sqlite.schema.jpa.control.ActivityType;
+import org.masouras.printing.sqlite.schema.jpa.control.ActivityTypeConverter;
 
 import java.time.LocalDateTime;
 

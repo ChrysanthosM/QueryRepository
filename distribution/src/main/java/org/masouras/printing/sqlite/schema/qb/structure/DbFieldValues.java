@@ -1,4 +1,4 @@
-package org.masouras.printing.sqlite.schema.structure;
+package org.masouras.printing.sqlite.schema.qb.structure;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

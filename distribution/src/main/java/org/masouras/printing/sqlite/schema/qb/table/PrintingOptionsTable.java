@@ -1,10 +1,10 @@
-package org.masouras.printing.sqlite.schema.table;
+package org.masouras.printing.sqlite.schema.qb.table;
 
 import org.masouras.base.annotation.J2SqlTable;
 import org.masouras.core.AbstractTable;
 import org.masouras.core.PairOfTableField;
-import org.masouras.printing.sqlite.schema.structure.DbField;
-import org.masouras.printing.sqlite.schema.structure.DbTable;
+import org.masouras.printing.sqlite.schema.qb.structure.DbField;
+import org.masouras.printing.sqlite.schema.qb.structure.DbTable;
 
 @J2SqlTable("sqlite")
 public class PrintingOptionsTable extends AbstractTable {

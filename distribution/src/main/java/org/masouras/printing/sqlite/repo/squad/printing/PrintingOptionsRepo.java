@@ -1,4 +1,4 @@
-package org.masouras.printing.sqlite.repo.squad.data;
+package org.masouras.printing.sqlite.repo.squad.printing;
 
 import org.masouras.base.repo.datasource.RepoBaseSQLite;
 

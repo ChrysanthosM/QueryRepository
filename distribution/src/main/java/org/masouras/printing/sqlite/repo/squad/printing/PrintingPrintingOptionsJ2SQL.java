@@ -1,11 +1,11 @@
-package org.masouras.printing.sqlite.repo.squad.data;
+package org.masouras.printing.sqlite.repo.squad.printing;
 
 import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.repo.base.AbstractJ2;
 import org.masouras.core.J2SQL;
-import org.masouras.printing.sqlite.schema.table.PrintingOptionsTable;
+import org.masouras.printing.sqlite.schema.qb.table.PrintingOptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @J2SqlLoader("sqlite")

@@ -1,4 +1,4 @@
-package org.masouras.printing.sqlite.schema.control;
+package org.masouras.printing.sqlite.schema.jpa.control;
 
 import jakarta.annotation.Nullable;
 import lombok.Getter;

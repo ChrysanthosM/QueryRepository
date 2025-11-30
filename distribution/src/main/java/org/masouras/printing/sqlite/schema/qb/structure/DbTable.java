@@ -1,4 +1,4 @@
-package org.masouras.printing.sqlite.schema.structure;
+package org.masouras.printing.sqlite.schema.qb.structure;
 
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.BaseDbTable;
