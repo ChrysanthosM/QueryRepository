@@ -22,5 +22,18 @@ public class PrintingDataJ2SQL extends AbstractJ2<PrintingDataRepo.NameOfSQL> im
         addLoader(NameOfSQL.INSERT, J2SQL.create(getDataSourceType()).insertInto(printingDataTable).insertRow());
     }
 
+    @LoadJ2SQL
+    public void loadListUnprocessed() {
+        addLoader(NameOfSQL.LIST_UNPROCESSED, J2SQL.create(getDataSourceType()).from(printingDataTable)
+                .where(printingDataTable.PROCESSED.eq(false))
+                .orderBy(printingDataTable.REC_ID));
+    }
+
+    @LoadJ2SQL
+    public void loadUpdateSetProcessed() {
+        addLoader(NameOfSQL.UPDATE_SET_PROCESSED, J2SQL.create(getDataSourceType()).updateInto(printingDataTable)
+                .updateFieldSetValue(printingDataTable.PROCESSED, true)
+                .where(printingDataTable.REC_ID.eq("?")));
+    }
 
 }

@@ -73,15 +73,16 @@ final class SQLFieldFromTable extends SqlUserSelection {
     }
 
     private String getTablePrefixForFields(@Nullable BaseDbTable forDbt) {
-        return forDbt == null ?
-                StringUtils.EMPTY :
-                StringUtils.defaultString(DbTableInstances.getInstance(forDbt).getTablePrefixForFields());
+        return forDbt == null
+                ? StringUtils.EMPTY
+                : StringUtils.defaultString(forDbt.getTablePrefix());
+//                StringUtils.defaultString(DbTableInstances.getInstance(forDbt).getTablePrefixForFields());
     }
 
     private String getFieldName(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        return forSQLRetrieverForDB.getTypeOfNamingSystemOrNormalized() == LinSQL.TypeOfNamingSystemOrNormalized.SYSTEM ?
-                this.dbField.getDbfSystemName() :
-                this.dbField.getDbfNormalName();
+        return forSQLRetrieverForDB.getTypeOfNamingSystemOrNormalized() == LinSQL.TypeOfNamingSystemOrNormalized.SYSTEM
+                ? this.dbField.getDbfSystemName()
+                : this.dbField.getDbfNormalName();
     }
 
     private boolean hasNoExplicitPrefix() {

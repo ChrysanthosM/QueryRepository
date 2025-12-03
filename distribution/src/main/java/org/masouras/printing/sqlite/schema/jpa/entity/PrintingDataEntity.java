@@ -18,6 +18,9 @@ public class PrintingDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "PROCESSED")
+    private boolean processed;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss:SSSS")
     @Column(name = "CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private LocalDateTime currentTimestamp;

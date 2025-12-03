@@ -9,8 +9,7 @@ import org.masouras.base.builder.DbFieldDataType;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static org.masouras.base.builder.DbFieldDataType.DATATYPE_INTEGER;
-import static org.masouras.base.builder.DbFieldDataType.DATATYPE_TEXT;
+import static org.masouras.base.builder.DbFieldDataType.*;
 
 @Getter
 public enum DbField implements BaseDbField {
@@ -27,6 +26,7 @@ public enum DbField implements BaseDbField {
     OPTION_VALUE("OPTION_VALUE", DATATYPE_TEXT),
     OPTION_DETAILS("OPTION_DETAILS", DATATYPE_TEXT),
 
+    PROCESSED("PROCESSED", DATATYPE_BOOLEAN),
     CONTENT_BASE64("CONTENT_BASE64", DATATYPE_TEXT),
     CONTENT_TYPE("CONTENT_TYPE", DATATYPE_TEXT),
 

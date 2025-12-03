@@ -3,8 +3,6 @@ package org.masouras.core;
 import jakarta.annotation.PostConstruct;
 import org.masouras.base.builder.BaseDbTable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +10,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class DbTableInstances {
     private static final Map<BaseDbTable, DbTable> mapTableInstances = new ConcurrentHashMap<>();
     static DbTable getInstance(BaseDbTable forDbT) {
