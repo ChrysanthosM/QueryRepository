@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.core.J2SQL;
 import org.masouras.core.J2SQLShared;
-import org.masouras.sample.db2i.schema.structure.DbFieldValues;
-import org.masouras.sample.db2i.schema.table.AutoNumberingTable;
-import org.masouras.sample.db2i.schema.table.OptionsTable;
+import org.masouras.squad.sample.db2i.schema.structure.DbFieldValues;
+import org.masouras.squad.sample.db2i.schema.table.AutoNumberingTable;
+import org.masouras.squad.sample.db2i.schema.table.OptionsTable;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;

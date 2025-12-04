@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+//@Component
+@Deprecated(forRemoval = true)
 public class DbTableInstances {
     private static final Map<BaseDbTable, DbTable> mapTableInstances = new ConcurrentHashMap<>();
     static DbTable getInstance(BaseDbTable forDbT) {
