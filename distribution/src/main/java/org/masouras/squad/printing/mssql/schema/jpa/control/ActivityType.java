@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.masouras.squad.printing.mssql.schema.qb.structure.DbFieldValues;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum ActivityType {
-    NEW_ENTRY_XML("10001"),
+    NEW_ENTRY_XML(DbFieldValues.ValuesForActivityType.NEW_ENTRY_XML.getValue()),
     ;
     private final String code;
 

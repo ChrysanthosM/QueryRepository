@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.masouras.squad.printing.mssql.schema.qb.structure.DbFieldValues;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum ContentType {
-    XML_POLICY("10001"),
+    XML_POLICY(DbFieldValues.ValuesForContentType.XML_POLICY.getValue()),
     ;
     private final String code;
 

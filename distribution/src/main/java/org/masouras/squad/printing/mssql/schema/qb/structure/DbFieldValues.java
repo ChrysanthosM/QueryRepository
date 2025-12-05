@@ -17,7 +17,7 @@ public class DbFieldValues {
 
     @Getter @AllArgsConstructor
     public enum ValuesForContentType implements ValueForBase {
-        XML("xml");
+        XML_POLICY("10001");
         private final DbField forDbField = DbField.CONTENT_TYPE;
         private final String value;
     }

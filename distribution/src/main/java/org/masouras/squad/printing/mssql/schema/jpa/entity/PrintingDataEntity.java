@@ -3,7 +3,6 @@ package org.masouras.squad.printing.mssql.schema.jpa.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.masouras.squad.printing.mssql.schema.jpa.control.ContentType;
 import org.masouras.squad.printing.mssql.schema.jpa.control.ContentTypeConverter;
