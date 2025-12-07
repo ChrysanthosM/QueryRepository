@@ -13,12 +13,12 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.mssql", havingValue = "true")
 public non-sealed class MssqlConfig implements BaseConfig {
-    @Value("${mssql.url:null}")
+    @Value("${mssql.url:#{null}}")
     private String mssqlUrl;
 
-    @Value("${mssql.username:null}")
+    @Value("${mssql.username:#{null}}")
     private String mssqlUsername;
-    @Value("${mssql.password:null}")
+    @Value("${mssql.password:#{null}}")
     private String mssqlPassword;
 
     @Bean(name = "mssqlDataSource")

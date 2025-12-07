@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class ActivityEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "REC_ID")
     private Long id;
 
     @NonNull

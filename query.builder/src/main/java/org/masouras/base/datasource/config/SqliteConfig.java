@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.sqlite", havingValue = "true")
 public non-sealed class SqliteConfig implements BaseConfig {
-    @Value("${sqlite.url:null}")
+    @Value("${sqlite.url:#{null}}")
     private String sqliteUrl;
 
     @Bean(name = "sqliteDataSource")

@@ -13,12 +13,12 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnProperty(name = "datasource.type.db2i", havingValue = "true")
 public non-sealed class Db2iConfig implements BaseConfig {
-    @Value("${db2i.url:null}")
+    @Value("${db2i.url:#{null}}")
     private String db2iUrl;
 
-    @Value("${db2i.username:null}")
+    @Value("${db2i.username:#{null}}")
     private String db2iUsername;
-    @Value("${db2i.password:null}")
+    @Value("${db2i.password:#{null}}")
     private String db2iPassword;
 
     @Bean(name = "db2iDataSource")

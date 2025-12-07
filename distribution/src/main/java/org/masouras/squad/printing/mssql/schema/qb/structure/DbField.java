@@ -13,7 +13,7 @@ import static org.masouras.base.builder.DbFieldDataType.*;
 
 @Getter
 public enum DbField implements BaseDbField {
-    REC_ID("ID", DATATYPE_INTEGER),
+    REC_ID("REC_ID", DATATYPE_INTEGER),
     MODIFIED_AT("MODIFIED_AT", DATATYPE_TEXT),
 
     ACTIVITY_ID("ACTIVITY_ID", DATATYPE_INTEGER),

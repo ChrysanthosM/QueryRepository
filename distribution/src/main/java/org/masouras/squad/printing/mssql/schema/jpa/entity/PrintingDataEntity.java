@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 public class PrintingDataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "REC_ID")
     private Long id;
 
     @Column(name = "PROCESSED")
