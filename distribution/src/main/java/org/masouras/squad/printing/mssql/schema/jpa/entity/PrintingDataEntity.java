@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.masouras.squad.printing.mssql.schema.jpa.control.ContentType;
 import org.masouras.squad.printing.mssql.schema.jpa.control.ContentTypeConverter;
+import org.masouras.squad.printing.mssql.schema.jpa.control.FileExtensionType;
 
 import java.time.LocalDateTime;
 
@@ -40,9 +41,15 @@ public class PrintingDataEntity {
     private ContentType contentType;
 
     @NonNull
+    @Convert(converter = ContentTypeConverter.class)
+    @Column(name = "EXTENSION_TYPE", nullable = false, length = 5)
+    private FileExtensionType fileExtensionType;
+
+    @NonNull
     @Lob
     @Column(name = "CONTENT_BASE64", nullable = false)
     private String contentBase64;
+
 
     @PrePersist
     protected void onCreate() {
