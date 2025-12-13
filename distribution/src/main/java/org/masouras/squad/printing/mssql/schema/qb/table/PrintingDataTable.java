@@ -11,7 +11,7 @@ import org.masouras.squad.printing.mssql.schema.qb.structure.DbTable;
 public class PrintingDataTable extends AbstractTable {
     private PrintingDataTable() {
         super(DbTable.PRINTING_DATA);
-        setDbFs(REC_ID, PROCESSED, MODIFIED_AT, ACTIVITY_ID, CONTENT_TYPE, CONTENT_BASE64);
+        setDbFs(REC_ID, PROCESSED, MODIFIED_AT, ACTIVITY_ID, CONTENT_TYPE, EXTENSION_TYPE, CONTENT_VALIDATED, CONTENT_BASE64);
     }
 
     public final PairOfTableField REC_ID = getPairOfTableField(DbField.REC_ID);
@@ -19,5 +19,7 @@ public class PrintingDataTable extends AbstractTable {
     public final PairOfTableField MODIFIED_AT = getPairOfTableField(DbField.MODIFIED_AT);
     public final PairOfTableField ACTIVITY_ID = getPairOfTableField(DbField.ACTIVITY_ID);
     public final PairOfTableField CONTENT_TYPE = getPairOfTableField(DbField.CONTENT_TYPE);
+    public final PairOfTableField EXTENSION_TYPE = getPairOfTableField(DbField.EXTENSION_TYPE);
+    public final PairOfTableField CONTENT_VALIDATED = getPairOfTableField(DbField.CONTENT_VALIDATED);
     public final PairOfTableField CONTENT_BASE64 = getPairOfTableField(DbField.CONTENT_BASE64);
 }

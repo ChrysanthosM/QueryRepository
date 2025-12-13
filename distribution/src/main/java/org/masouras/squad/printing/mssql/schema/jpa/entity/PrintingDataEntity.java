@@ -45,6 +45,10 @@ public class PrintingDataEntity {
     @Column(name = "EXTENSION_TYPE", nullable = false, length = 5)
     private FileExtensionType fileExtensionType;
 
+
+    @Column(name = "CONTENT_VALIDATED")
+    private boolean contentValidated;
+
     @NonNull
     @Lob
     @Column(name = "CONTENT_BASE64", nullable = false)
@@ -54,6 +58,7 @@ public class PrintingDataEntity {
     @PrePersist
     protected void onCreate() {
         this.processed = false;
+        this.contentValidated = false;
         this.modifiedAt = LocalDateTime.now();
     }
 }
