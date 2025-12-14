@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.masouras.squad.printing.mssql.schema.jpa.control.ContentType;
-import org.masouras.squad.printing.mssql.schema.jpa.control.ContentTypeConverter;
-import org.masouras.squad.printing.mssql.schema.jpa.control.FileExtensionType;
-import org.masouras.squad.printing.mssql.schema.jpa.control.FileExtensionTypeConverter;
+import org.masouras.squad.printing.mssql.schema.jpa.control.*;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +20,9 @@ public class PrintingDataEntity {
     @Column(name = "REC_ID")
     private Long id;
 
-    @Column(name = "PROCESSED")
-    private boolean processed;
+    @Column(name = "PRINTING_STATUS", nullable = false, length = 1)
+    @Convert(converter = PrintingStatusConverter.class)
+    private PrintingStatus printingStatus;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss:SSSS")
     @UpdateTimestamp
@@ -47,8 +45,8 @@ public class PrintingDataEntity {
     private FileExtensionType fileExtensionType;
 
 
-    @Column(name = "CONTENT_VALIDATED")
-    private boolean contentValidated;
+    @Column(name = "ERROR_MESSAGE", length = 1024)
+    private String errorMessage;
 
     @NonNull
     @Lob
@@ -58,8 +56,7 @@ public class PrintingDataEntity {
 
     @PrePersist
     protected void onCreate() {
-        this.processed = false;
-        this.contentValidated = false;
+        this.printingStatus = PrintingStatus.INSERTED;
         this.modifiedAt = LocalDateTime.now();
     }
 }
