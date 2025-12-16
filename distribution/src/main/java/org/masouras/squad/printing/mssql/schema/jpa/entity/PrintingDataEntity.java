@@ -30,7 +30,7 @@ public class PrintingDataEntity {
     private LocalDateTime modifiedAt;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ACTIVITY_ID", nullable = false)
     private ActivityEntity activity;
 
@@ -49,9 +49,17 @@ public class PrintingDataEntity {
     private String errorMessage;
 
     @NonNull
-    @Lob
-    @Column(name = "CONTENT_BASE64", nullable = false)
-    private String contentBase64;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "INITIAL_CONTENT_ID", nullable = false)
+    private PrintingFilesEntity initialContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "VALIDATED_CONTENT_ID")
+    private PrintingFilesEntity validatedContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FINAL_CONTENT_ID")
+    private PrintingFilesEntity finalContent;
 
 
     @PrePersist

@@ -8,6 +8,7 @@ import java.util.List;
 
 public enum DbTable implements BaseDbTable {
     PRINTING_DATA("PrintingDataTable", null, List.of(DbField.REC_ID), true, true),
+    PRINTING_FILES("PrintingFilesTable", null, List.of(DbField.REC_ID), true, true),
     PRINTING_OPTIONS("PrintingOptionsTable", null, List.of(DbField.REC_ID), true, false),
     ACTIVITIES("ActivityTable", null, List.of(DbField.REC_ID), true, false),
     ;

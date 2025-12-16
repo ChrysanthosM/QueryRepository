@@ -5,6 +5,7 @@ import org.masouras.squad.printing.mssql.schema.jpa.control.FileExtensionType;
 import org.masouras.squad.printing.mssql.schema.jpa.control.PrintingStatus;
 import org.masouras.squad.printing.mssql.schema.jpa.entity.ActivityEntity;
 import org.masouras.squad.printing.mssql.schema.jpa.entity.PrintingDataEntity;
+import org.masouras.squad.printing.mssql.schema.jpa.entity.PrintingFilesEntity;
 import org.masouras.squad.printing.mssql.schema.qb.structure.DbField;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -30,7 +31,20 @@ public class PrintingDataRowMapper implements RowMapper<PrintingDataEntity> {
         entity.setContentType(Objects.requireNonNull(ContentType.getFromCode(rs.getString(DbField.CONTENT_TYPE.systemName()))));
         entity.setFileExtensionType(Objects.requireNonNull(FileExtensionType.getFromCode(rs.getString(DbField.EXTENSION_TYPE.systemName()))));
 
-        entity.setContentBase64(rs.getString(DbField.CONTENT_BASE64.systemName()));
+        PrintingFilesEntity initialPrintingFilesEntity = new PrintingFilesEntity();
+        initialPrintingFilesEntity.setId(rs.getLong(DbField.INITIAL_CONTENT_ID.systemName()));
+        initialPrintingFilesEntity.setContentBase64(rs.getString(DbField.INITIAL_CONTENT_BASE64.systemName()));
+        entity.setInitialContent(initialPrintingFilesEntity);
+
+        PrintingFilesEntity validatedPrintingFilesEntity = new PrintingFilesEntity();
+        long validatedId = rs.getLong(DbField.VALIDATED_CONTENT_ID.systemName());
+        validatedPrintingFilesEntity.setId(rs.wasNull() ? null : validatedId);
+        entity.setValidatedContent(validatedPrintingFilesEntity);
+
+        PrintingFilesEntity finalPrintingFilesEntity = new PrintingFilesEntity();
+        long finalId = rs.getLong(DbField.FINAL_CONTENT_ID.systemName());
+        finalPrintingFilesEntity.setId(rs.wasNull() ? null : finalId);
+        entity.setFinalContent(finalPrintingFilesEntity);
 
         return entity;
     }

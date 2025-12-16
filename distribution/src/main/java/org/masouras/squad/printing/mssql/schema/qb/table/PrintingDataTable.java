@@ -11,7 +11,8 @@ import org.masouras.squad.printing.mssql.schema.qb.structure.DbTable;
 public class PrintingDataTable extends AbstractTable {
     private PrintingDataTable() {
         super(DbTable.PRINTING_DATA);
-        setDbFs(REC_ID, PRINTING_STATUS, MODIFIED_AT, ACTIVITY_ID, CONTENT_TYPE, EXTENSION_TYPE, ERROR_MESSAGE, CONTENT_BASE64);
+        setDbFs(REC_ID, PRINTING_STATUS, MODIFIED_AT, ACTIVITY_ID, CONTENT_TYPE, EXTENSION_TYPE, ERROR_MESSAGE,
+                INITIAL_CONTENT_ID, VALIDATED_CONTENT_ID, FINAL_CONTENT_ID);
     }
 
     public final PairOfTableField REC_ID = getPairOfTableField(DbField.REC_ID);
@@ -21,5 +22,7 @@ public class PrintingDataTable extends AbstractTable {
     public final PairOfTableField CONTENT_TYPE = getPairOfTableField(DbField.CONTENT_TYPE);
     public final PairOfTableField EXTENSION_TYPE = getPairOfTableField(DbField.EXTENSION_TYPE);
     public final PairOfTableField ERROR_MESSAGE = getPairOfTableField(DbField.ERROR_MESSAGE);
-    public final PairOfTableField CONTENT_BASE64 = getPairOfTableField(DbField.CONTENT_BASE64);
+    public final PairOfTableField INITIAL_CONTENT_ID = getPairOfTableField(DbField.INITIAL_CONTENT_ID);
+    public final PairOfTableField VALIDATED_CONTENT_ID = getPairOfTableField(DbField.VALIDATED_CONTENT_ID);
+    public final PairOfTableField FINAL_CONTENT_ID = getPairOfTableField(DbField.FINAL_CONTENT_ID);
 }
