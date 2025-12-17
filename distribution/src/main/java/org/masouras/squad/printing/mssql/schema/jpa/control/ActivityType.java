@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum ActivityType {
-    NEW_ENTRY_XML(DbFieldValues.ValuesForActivityType.NEW_ENTRY_XML.getValue()),
+    QUOTATION_NEW(DbFieldValues.ValuesForActivityType.QUOTATION_NEW.getValue()),
     ;
     private final String code;
 

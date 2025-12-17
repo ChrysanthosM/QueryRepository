@@ -24,7 +24,7 @@ public class DbFieldValues {
 
     @Getter @AllArgsConstructor
     public enum ValuesForActivityType implements ValueForBase {
-        NEW_ENTRY_XML("10001");
+        QUOTATION_NEW("10001");
         private final DbField forDbField = DbField.ACTIVITY_TYPE;
         private final String value;
     }
