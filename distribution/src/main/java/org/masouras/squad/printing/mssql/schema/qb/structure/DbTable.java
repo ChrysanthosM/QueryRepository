@@ -7,10 +7,12 @@ import org.masouras.base.builder.ConfigDbTable;
 import java.util.List;
 
 public enum DbTable implements BaseDbTable {
-    PRINTING_DATA("PrintingDataTable", null, List.of(DbField.REC_ID), true, true),
-    PRINTING_FILES("PrintingFilesTable", null, List.of(DbField.REC_ID), true, true),
+    PRINTING_DATA("PrintingDataTable", null, List.of(DbField.REC_ID), true, false),
+    PRINTING_FILES("PrintingFilesTable", null, List.of(DbField.REC_ID), true, false),
     PRINTING_OPTIONS("PrintingOptionsTable", null, List.of(DbField.REC_ID), true, false),
     ACTIVITIES("ActivityTable", null, List.of(DbField.REC_ID), true, false),
+    PRINTING_SETUP("PrintingSetUpTable", null, List.of(DbField.REC_ID), true, false),
+    LETTER_SETUP("LetterSetUpTable", null, List.of(DbField.REC_ID), true, false),
     ;
 
     private final ConfigDbTable configDbTable;
