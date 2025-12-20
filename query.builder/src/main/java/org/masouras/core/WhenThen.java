@@ -1,6 +1,9 @@
 package org.masouras.core;
 
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.stream.Collectors;
 
 abstract sealed class WhenThen implements WhenBase, ResolveObjectForSQLBase
         permits WhenThenSearched, WhenThenSimple {
@@ -13,6 +16,9 @@ abstract sealed class WhenThen implements WhenBase, ResolveObjectForSQLBase
     }
 
     protected String getThen(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        return " THEN " + LInSQLBuilderShared.getSqlUserSelection(this.thenExpression, this.inQuotesRequirement).getResolveObjectForSQL(forSQLRetrieverForDB);
+        String resolved = ResolveSqlUserSelection.getSqlUserSelection(this.thenExpression, this.inQuotesRequirement).stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
+        return " THEN " + resolved;
     }
 }

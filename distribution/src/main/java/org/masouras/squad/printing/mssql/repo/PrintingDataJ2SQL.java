@@ -11,7 +11,7 @@ import org.masouras.squad.printing.mssql.schema.qb.table.PrintingDataTable;
 import org.masouras.squad.printing.mssql.schema.qb.table.PrintingFilesTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.masouras.core.J2SQLShared.*;
+import static org.masouras.core.J2SQLShared.PFX;
 
 @J2SqlLoader("mssql")
 public class PrintingDataJ2SQL extends AbstractJ2<PrintingDataRepo.NameOfSQL> implements PrintingDataRepo {

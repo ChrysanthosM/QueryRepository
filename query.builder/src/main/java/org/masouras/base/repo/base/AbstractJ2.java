@@ -14,6 +14,7 @@ import org.masouras.base.datasource.EntityManagerResolver;
 import org.masouras.core.J2SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -95,6 +96,13 @@ public abstract class AbstractJ2<E extends Enum<E>> {
                 .toList();
         try {
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+
+            if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("jdwp")) {
+                if (log.isInfoEnabled()) {
+                    log.info("Generated SQLs:");
+                    bufferSQLs.forEach((e, s) -> log.info(s));
+                }
+            }
 
             bufferPositionalSQLs.putAll(
                     bufferSQLs.entrySet().stream()

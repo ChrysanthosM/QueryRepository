@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 final class SQLFunctionCASE extends SQLFunction {
     @Override
@@ -27,9 +28,17 @@ final class SQLFunctionCASE extends SQLFunction {
 
         @SuppressWarnings("unchecked")
         Optional<Object> caseOpt = (Optional<Object>) super.getParams().get(1);
-        String caseExpression = caseOpt.map(o -> LInSQLBuilderShared.getSqlUserSelection(o, inQuotesRequirement).getResolveObjectForSQL(forSQLRetrieverForDB)).orElse(null);
 
-        String elseExpression = LInSQLBuilderShared.getSqlUserSelection(super.getParams().get(2), inQuotesRequirement).getResolveObjectForSQL(forSQLRetrieverForDB);
+        String caseExpression = caseOpt.map(o ->
+                ResolveSqlUserSelection.getSqlUserSelection(o, inQuotesRequirement).stream()
+                        .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                        .collect(Collectors.joining(StringUtils.SPACE))
+        ).orElse(null);
+
+        String elseExpression = ResolveSqlUserSelection.getSqlUserSelection(super.getParams().get(2), inQuotesRequirement).stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
+
 
         List<Object> whenList = super.getParams().subList(3, super.getParams().size()) ;
         whenList.stream().filter(Objects::nonNull).forEach(f -> ((WhenThen) f).setInQuotesRequirement(inQuotesRequirement));

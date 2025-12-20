@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 final class SQLFieldOperation extends SqlUserSelection {
     @Override public Type getTypeOfSelection() { return this.getClass(); }
@@ -22,13 +23,22 @@ final class SQLFieldOperation extends SqlUserSelection {
         this.operation = expression;
     }
 
-    @Override public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        SqlUserSelection sqlUserSelection = LInSQLBuilderShared.getSqlUserSelection(this.object, false);
-        String keepAlias = sqlUserSelection.getAsAlias();
-        sqlUserSelection.setAsAlias(null);
-        sqlUserSelection.setIgnoreTableAsAlias();
-        return sqlUserSelection.getResolveObjectForSQL(forSQLRetrieverForDB) +
-                StringUtils.SPACE + LinSQLCommons.asAliasMain(keepAlias) +
-                StringUtils.SPACE + this.operation;
+    @Override
+    public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        List<String> resolved = ResolveSqlUserSelection.getSqlUserSelection(this.object, false).stream()
+                .map(sel -> {
+                    String keepAlias = sel.getAsAlias();
+                    sel.setAsAlias(null);
+                    sel.setIgnoreTableAsAlias();
+                    return sel.getResolveObjectForSQL(forSQLRetrieverForDB)
+                            + StringUtils.SPACE
+                            + LinSQLCommons.asAliasMain(keepAlias)
+                            + StringUtils.SPACE
+                            + this.operation;
+                })
+                .toList();
+
+        return String.join(StringUtils.SPACE, resolved);
     }
+
 }

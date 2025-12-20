@@ -1,7 +1,10 @@
 package org.masouras.core;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.stream.Collectors;
 
 final class BetweenValuesWhere extends AbstractWhere {
     @Override TypeOfWhere getTypeOfWhere() { return TypeOfWhere.WHERE_BETWEEN; }
@@ -15,10 +18,20 @@ final class BetweenValuesWhere extends AbstractWhere {
 
     @Override
     public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        return super.whereObjectForSQL(forSQLRetrieverForDB) + LInSQLBuilderShared.getSqlUserSelection(this.betweenValues.getLeft(), super.getInQuotesRequirement()).getResolveObjectForSQL(forSQLRetrieverForDB) +
-                " AND " +
-                LInSQLBuilderShared.getSqlUserSelection(this.betweenValues.getRight(), super.getInQuotesRequirement()).getResolveObjectForSQL(forSQLRetrieverForDB) +
-                super.resolveAttachedFilters(forSQLRetrieverForDB) +
-                super.resolveParenthesisRight();
+        String leftSql = ResolveSqlUserSelection.getSqlUserSelection(this.betweenValues.getLeft(), super.getInQuotesRequirement())
+                .stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
+        String rightSql = ResolveSqlUserSelection.getSqlUserSelection(this.betweenValues.getRight(), super.getInQuotesRequirement())
+                .stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
+
+        return super.whereObjectForSQL(forSQLRetrieverForDB)
+                + leftSql
+                + " AND "
+                + rightSql
+                + super.resolveAttachedFilters(forSQLRetrieverForDB)
+                + super.resolveParenthesisRight();
     }
 }

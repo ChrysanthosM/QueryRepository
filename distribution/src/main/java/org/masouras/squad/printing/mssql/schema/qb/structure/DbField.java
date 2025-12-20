@@ -9,7 +9,8 @@ import org.masouras.base.builder.DbFieldDataType;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static org.masouras.base.builder.DbFieldDataType.*;
+import static org.masouras.base.builder.DbFieldDataType.DATATYPE_INTEGER;
+import static org.masouras.base.builder.DbFieldDataType.DATATYPE_TEXT;
 
 @Getter
 public enum DbField implements BaseDbField {

@@ -3,7 +3,6 @@ package org.masouras.core;
 import jakarta.annotation.PostConstruct;
 import org.masouras.base.builder.BaseDbTable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,10 @@
 package org.masouras.squad.printing.mssql.schema.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "PrintingFilesTable")

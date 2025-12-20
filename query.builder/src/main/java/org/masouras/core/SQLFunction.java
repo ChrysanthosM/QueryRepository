@@ -3,6 +3,7 @@ package org.masouras.core;
 import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,20 +27,28 @@ abstract sealed class SQLFunction extends SqlUserSelection
     protected void setParams(List<Object> params) { this.params = params; }
     protected void addParam(Object param) { this.params.add(param); }
     private List<String> paramsSelectedFieldForSQL = null;
+
     protected List<String> getParamsSelectedFieldForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable Boolean inQuotesRequirement) {
         if (CollectionUtils.isNotEmpty(this.paramsSelectedFieldForSQL)) return this.paramsSelectedFieldForSQL;
-        this.paramsSelectedFieldForSQL = new ArrayList<>();
-        this.params.stream().filter(Objects::nonNull)
-                .forEach(arg -> this.paramsSelectedFieldForSQL.add(LInSQLBuilderShared.getSqlUserSelection(arg, inQuotesRequirement).getResolveObjectForSQL(forSQLRetrieverForDB)));
+        this.paramsSelectedFieldForSQL = this.params.stream()
+                .filter(Objects::nonNull)
+                .flatMap(arg -> ResolveSqlUserSelection.getSqlUserSelection(arg, inQuotesRequirement).stream()
+                        .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB)))
+                .toList();
         return this.paramsSelectedFieldForSQL;
     }
     protected String getFirstParamSelectedFieldForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable Boolean inQuotesRequirement) {
-        return LInSQLBuilderShared.getSqlUserSelection(this.params.getFirst(), inQuotesRequirement).getResolveObjectForSQL(forSQLRetrieverForDB);
+        return ResolveSqlUserSelection.getSqlUserSelection(this.params.getFirst(), inQuotesRequirement).stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
     }
     protected String getLastParamSelectedFieldForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable Boolean inQuotesRequirement) {
-        SqlUserSelection mainParam = LInSQLBuilderShared.getSqlUserSelection(this.params.getLast(), inQuotesRequirement);
-        mainParam.setIgnoreTableAsAlias();
-        return mainParam.getResolveObjectForSQL(forSQLRetrieverForDB);
+        return ResolveSqlUserSelection.getSqlUserSelection(this.params.getLast(), inQuotesRequirement).stream()
+                .map(sel -> {
+                    sel.setIgnoreTableAsAlias();
+                    return sel.getResolveObjectForSQL(forSQLRetrieverForDB);
+                })
+                .collect(Collectors.joining(StringUtils.SPACE));
     }
 
     abstract String defaultResolver(SQLRetrieverForDbAbstract forSQLRetrieverForDB);

@@ -2,8 +2,10 @@ package org.masouras.core;
 
 import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.util.stream.Collectors;
 
 final class SQLFieldObject extends SqlUserSelection {
     @Override public Type getTypeOfSelection() { return this.getClass(); }
@@ -23,7 +25,10 @@ final class SQLFieldObject extends SqlUserSelection {
         super.setAsAlias(asAlias);
     }
 
-    @Override public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        return LInSQLBuilderShared.getSqlUserSelection(this.object, super.getAsAlias()).getResolveObjectForSQL(forSQLRetrieverForDB) ;
+    @Override
+    public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
+        return ResolveSqlUserSelection.getSqlUserSelection(this.object, super.getAsAlias()).stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
     }
 }

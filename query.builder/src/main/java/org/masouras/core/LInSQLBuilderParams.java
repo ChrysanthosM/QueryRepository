@@ -67,19 +67,19 @@ final class LInSQLBuilderParams {
                 .map(s -> ((SQLFieldFromTable) s).getDbFieldEnum())
                 .toList();
     }
-    void addUserSelection(Object userSelection, String asAlias) { this.sqlUserSelections.add(LInSQLBuilderShared.getSqlUserSelection(userSelection, asAlias)); }
+    void addUserSelection(Object userSelection, String asAlias) { this.sqlUserSelections.addAll(ResolveSqlUserSelection.getSqlUserSelection(userSelection, asAlias)); }
 
     //-------GroupBy/Having
     void setGroupBySelectionsHavingValues(MutablePair<List<Object>, List<WhereBase>> groupBySelectionsHavingValues) {
         List<SqlUserSelection> groupByUserSelections = groupBySelectionsHavingValues.getLeft().stream()
                 .filter(Objects::nonNull)
-                .map(LInSQLBuilderShared::getSqlUserSelection)
+                .flatMap(obj -> ResolveSqlUserSelection.getSqlUserSelection(obj).stream())
                 .toList();
         this.groupBySelectionsHavingValues = MutablePair.of(groupByUserSelections, groupBySelectionsHavingValues.getRight());
     }
 
     //-------OrderBy
-    void addOrdering(Object userSelection, SortOrder sortOrder) { this.orderByFields.add(MutablePair.of(LInSQLBuilderShared.getSqlUserSelection(userSelection), sortOrder)); }
+    void addOrdering(Object userSelection, SortOrder sortOrder) { ResolveSqlUserSelection.getSqlUserSelection(userSelection).stream().map(selection -> MutablePair.of(selection, sortOrder)).forEach(this.orderByFields::add); }
 
     //-------Limit/Offset
     void setLimitOffset(MutablePair<BigInteger, BigInteger> limitOffset) { this.limitOffset = limitOffset; }
@@ -102,10 +102,13 @@ final class LInSQLBuilderParams {
 
     //-------Update Fields - Set Values
     void addUpdateFieldSetValue(Object updField, Object setValue) {
-        Preconditions.checkNotNull(((PairOfTableField) updField).getBaseDbField().getFieldDataType());
-        this.updateFieldsSetValues.add(MutablePair.of(
-                LInSQLBuilderShared.getSqlUserSelection(updField),
-                LInSQLBuilderShared.getSqlUserSelection(setValue, ((PairOfTableField) updField).getBaseDbField().getFieldDataType().getInQuotesRequirement())));
+        PairOfTableField pairField = (PairOfTableField) updField;
+        Preconditions.checkNotNull(pairField.getBaseDbField().getFieldDataType());
+        ResolveSqlUserSelection.getSqlUserSelection(updField).forEach(updSel ->
+                ResolveSqlUserSelection.getSqlUserSelection(setValue, pairField.getBaseDbField().getFieldDataType().getInQuotesRequirement()).forEach(setSel ->
+                        this.updateFieldsSetValues.add(MutablePair.of(updSel, setSel))
+                )
+        );
     }
 
     //-------Insert Rows, set Field Values

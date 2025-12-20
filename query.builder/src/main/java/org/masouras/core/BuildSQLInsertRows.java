@@ -50,17 +50,24 @@ final class BuildSQLInsertRows extends BuildSQLCore {
 
     public String getInsertIntoFieldsForSQL() { return this.insertIntoFieldsForSQL.concat(StringUtils.SPACE); }
 
-
-    private String getInsertRowForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB,
-                                      List<BaseDbField> intoDbF, boolean isAutoStamp, List<Object> rowFieldValues) {
+    private String getInsertRowForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB, List<BaseDbField> intoDbF, boolean isAutoStamp, List<Object> rowFieldValues) {
         List<String> fieldValuesForSQL = IntStream.range(0, intoDbF.size())
-                .mapToObj(i -> LInSQLBuilderShared.getSqlUserSelection(rowFieldValues.get(i), intoDbF.get(i).getFieldDataType().getInQuotesRequirement())
-                        .getResolveObjectForSQL(forSQLRetrieverForDB))
+                .mapToObj(i ->
+                        ResolveSqlUserSelection.getSqlUserSelection(
+                                        rowFieldValues.get(i),
+                                        intoDbF.get(i).getFieldDataType().getInQuotesRequirement()
+                                ).stream()
+                                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                                .collect(Collectors.joining(StringUtils.SPACE))
+                )
                 .collect(Collectors.toList());
+
         if (isAutoStamp) {
             fieldValuesForSQL.add(System.getenv("USERNAME"));
             fieldValuesForSQL.add(new Timestamp(System.currentTimeMillis()).toString());
         }
+
         return fieldValuesForSQL.stream().collect(Collectors.joining(", ", "(", ")"));
     }
+
 }

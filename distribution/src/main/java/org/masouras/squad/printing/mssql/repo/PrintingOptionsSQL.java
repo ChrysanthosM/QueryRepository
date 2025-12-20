@@ -6,9 +6,9 @@ import org.masouras.squad.printing.mssql.schema.qb.table.PrintingOptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @J2SqlService("mssql")
-public class PrintingOptionsSQL extends AbstractSQL<PrintingOptionsRepo.NameOfSQL, PrintingPrintingOptionsJ2SQL, PrintingOptionsTable> {
+public class PrintingOptionsSQL extends AbstractSQL<PrintingOptionsRepo.NameOfSQL, PrintingOptionsJ2SQL, PrintingOptionsTable> {
     @Autowired
-    public PrintingOptionsSQL(PrintingPrintingOptionsJ2SQL j2sql) {
+    public PrintingOptionsSQL(PrintingOptionsJ2SQL j2sql) {
         super(j2sql);
     }
 }

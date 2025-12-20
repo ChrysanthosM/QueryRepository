@@ -21,14 +21,18 @@ final class InValuesWhere extends AbstractWhere {
     @Override
     public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
         StringBuilder returnValue = new StringBuilder(super.whereObjectForSQL(forSQLRetrieverForDB));
+
         if (CollectionUtils.isNotEmpty(this.inValues)) {
             List<String> newInValues = this.inValues.stream()
                     .filter(Objects::nonNull)
-                    .map(o -> LInSQLBuilderShared.getSqlUserSelection(o, super.getInQuotesRequirement()).getResolveObjectForSQL(forSQLRetrieverForDB))
+                    .flatMap(o -> ResolveSqlUserSelection
+                            .getSqlUserSelection(o, super.getInQuotesRequirement())
+                            .stream()
+                            .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB)))
                     .toList();
-            String valuesJoined = newInValues.stream().collect(Collectors.joining(", ", "(", ")"));
-            returnValue.append(valuesJoined);
+            returnValue.append(newInValues.stream().collect(Collectors.joining(", ", "(", ")")));
         }
+
         returnValue.append(super.resolveAttachedFilters(forSQLRetrieverForDB));
         return returnValue.append(super.resolveParenthesisRight()).toString();
     }

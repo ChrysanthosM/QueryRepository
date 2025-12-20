@@ -2,6 +2,9 @@ package org.masouras.core;
 
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.stream.Collectors;
 
 final class WhenThenSimple extends WhenThen {
     private final Object whenCondition;
@@ -13,7 +16,9 @@ final class WhenThenSimple extends WhenThen {
 
     @Override
     public String getResolveObjectForSQL(SQLRetrieverForDbAbstract forSQLRetrieverForDB) {
-        return "WHEN " + LInSQLBuilderShared.getSqlUserSelection(this.whenCondition).getResolveObjectForSQL(forSQLRetrieverForDB) +
-                super.getThen(forSQLRetrieverForDB);
+        String whenClause = ResolveSqlUserSelection.getSqlUserSelection(this.whenCondition).stream()
+                .map(sel -> sel.getResolveObjectForSQL(forSQLRetrieverForDB))
+                .collect(Collectors.joining(StringUtils.SPACE));
+        return "WHEN " + whenClause + super.getThen(forSQLRetrieverForDB);
     }
 }

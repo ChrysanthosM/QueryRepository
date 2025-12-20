@@ -30,9 +30,10 @@ abstract sealed class AbstractWhere extends AbstractFilter
         returnValue.append(resolveParenthesisLeft());
 
         if (this.whereObject != null) {
-            SqlUserSelection userSelection = LInSQLBuilderShared.getSqlUserSelection(this.whereObject);
-            userSelection.setIgnoreTableAsAlias();
-            returnValue.append(userSelection.getResolveObjectForSQL(forSQLRetrieverForDB)).append(StringUtils.SPACE);
+            ResolveSqlUserSelection.getSqlUserSelection(this.whereObject).forEach(userSelection -> {
+                userSelection.setIgnoreTableAsAlias();
+                returnValue.append(userSelection.getResolveObjectForSQL(forSQLRetrieverForDB)).append(StringUtils.SPACE);
+            });
         }
         if (super.isInvertSelection()) returnValue.append("NOT").append(StringUtils.SPACE);
         returnValue.append(StringUtils.defaultIfBlank(getTypeOfWhere().getPutClause(), StringUtils.defaultString(putComparisonClause)));
