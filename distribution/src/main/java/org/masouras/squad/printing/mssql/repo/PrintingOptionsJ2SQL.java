@@ -26,7 +26,7 @@ public class PrintingOptionsJ2SQL extends AbstractJ2<PrintingOptionsRepo.NameOfS
     @LoadJ2SQL
     public void loadListPrintingSetUp() {
         addLoader(NameOfSQL.LIST_PRINTING_SETUP, J2SQL.create(getDataSourceType())
-                .from(printingSetUpTable.as(T0)).select(t0(printingSetUpTable.LETTER_TYPE))
+                .from(printingSetUpTable.as(T0)).select(t0(printingSetUpTable.ACTIVITY_TYPE, printingSetUpTable.CONTENT_TYPE, printingSetUpTable.LETTER_TYPE))
                 .fullJoin(letterSetUpTable.as(J1)).on(t0(printingSetUpTable.LETTER_TYPE).eq(j1(letterSetUpTable.LETTER_TYPE))).fromJoinSelectOnly(j1(letterSetUpTable.XSL_TYPE, letterSetUpTable.VALID_FLAG))
                 .where(j1(letterSetUpTable.VALID_FLAG).ne(ValidFlag.DISABLED))
                 .orderBy(t0(printingSetUpTable.SEQ_NO), j1(letterSetUpTable.SEQ_NO))

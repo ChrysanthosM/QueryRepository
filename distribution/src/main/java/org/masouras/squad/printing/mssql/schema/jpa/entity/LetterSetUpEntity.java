@@ -13,18 +13,9 @@ import org.masouras.squad.printing.mssql.schema.jpa.control.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class LetterSetUpEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "REC_ID")
-    private Long id;
-
+    @EmbeddedId
     @NonNull
-    @Convert(converter = LetterTypeConverter.class)
-    @Column(name = "LETTER_TYPE", nullable = false, length = 5)
-    private ContentType letterType;
-
-    @Column(name = "SEQ_NO")
-    private int seqNo;
+    private LetterSetUpKey id;
 
     @NonNull
     @Convert(converter = XslTypeConverter.class)
@@ -34,6 +25,6 @@ public class LetterSetUpEntity {
     @NonNull
     @Convert(converter = ValidFlagConverter.class)
     @Column(name = "VALID_FLAG", nullable = false, length = 1)
-    private String validFlag;
+    private ValidFlag validFlag;
 }
 

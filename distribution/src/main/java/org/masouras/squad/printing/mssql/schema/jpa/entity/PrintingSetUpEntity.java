@@ -13,27 +13,13 @@ import org.masouras.squad.printing.mssql.schema.jpa.control.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class PrintingSetUpEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "REC_ID")
-    private Long id;
-
+    @EmbeddedId
     @NonNull
-    @Convert(converter = ActivityTypeConverter.class)
-    @Column(name = "ACTIVITY_TYPE", nullable = false, length = 5)
-    private ActivityType activityType;
-
-    @NonNull
-    @Convert(converter = ContentTypeConverter.class)
-    @Column(name = "CONTENT_TYPE", nullable = false, length = 5)
-    private ContentType contentType;
-
-    @Column(name = "SEQ_NO")
-    private int seqNo;
+    private PrintingSetUpKey id;
 
     @NonNull
     @Convert(converter = LetterTypeConverter.class)
     @Column(name = "LETTER_TYPE", nullable = false, length = 5)
-    private ContentType letterType;
+    private LetterType letterType;
 }
 
