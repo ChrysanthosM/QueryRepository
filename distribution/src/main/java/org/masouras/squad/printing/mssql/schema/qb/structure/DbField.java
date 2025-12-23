@@ -46,6 +46,7 @@ public enum DbField implements BaseDbField {
 
     LETTER_TYPE("LETTER_TYPE", DATATYPE_TEXT),
     XSL_TYPE("XSL_TYPE", DATATYPE_TEXT),
+    RENDER_TYPE("RENDER_TYPE", DATATYPE_TEXT),
 
     ;
 

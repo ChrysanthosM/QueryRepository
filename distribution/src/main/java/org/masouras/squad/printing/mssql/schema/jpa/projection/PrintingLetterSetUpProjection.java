@@ -7,5 +7,6 @@ public interface PrintingLetterSetUpProjection {
     ContentType getContentType();
     LetterType getLetterType();
     XslType getXslType();
+    RendererType getRendererType();
     ValidFlag getValidFlag();
 }

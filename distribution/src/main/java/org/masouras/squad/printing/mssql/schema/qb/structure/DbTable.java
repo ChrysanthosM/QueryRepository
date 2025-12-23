@@ -11,8 +11,8 @@ public enum DbTable implements BaseDbTable {
     PRINTING_FILES("PrintingFilesTable", null, List.of(DbField.REC_ID), true, false),
     PRINTING_OPTIONS("PrintingOptionsTable", null, List.of(DbField.REC_ID), true, false),
     ACTIVITIES("ActivityTable", null, List.of(DbField.REC_ID), true, false),
-    PRINTING_SETUP("PrintingSetUpTable", null, List.of(DbField.REC_ID), true, false),
-    LETTER_SETUP("LetterSetUpTable", null, List.of(DbField.REC_ID), true, false),
+    PRINTING_SETUP("PrintingSetUpTable", null, List.of(DbField.ACTIVITY_TYPE, DbField.CONTENT_TYPE, DbField.SEQ_NO), false, false),
+    LETTER_SETUP("LetterSetUpTable", null, List.of(DbField.LETTER_TYPE, DbField.SEQ_NO), false, false),
     ;
 
     private final ConfigDbTable configDbTable;

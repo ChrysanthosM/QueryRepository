@@ -11,5 +11,6 @@ public class PrintingLetterSetUpProjectionImplementor implements PrintingLetterS
     private final ContentType contentType;
     private final LetterType letterType;
     private final XslType xslType;
+    private final RendererType rendererType;
     private final ValidFlag validFlag;
 }

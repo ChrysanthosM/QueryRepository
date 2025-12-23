@@ -18,6 +18,7 @@ public class PrintingLetterSetUpMapper {
                         ContentType.getFromCode((String) row.get(DbField.CONTENT_TYPE.systemName())),
                         LetterType.getFromCode((String) row.get(DbField.LETTER_TYPE.systemName())),
                         XslType.getFromCode((String) row.get(DbField.XSL_TYPE.systemName())),
+                        RendererType.getFromCode((String) row.get(DbField.RENDER_TYPE.systemName())),
                         ValidFlag.getFromCode((String) row.get(DbField.VALID_FLAG.systemName()))
                 ))
                 .toList();

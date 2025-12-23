@@ -23,6 +23,11 @@ public class LetterSetUpEntity {
     private XslType xslType;
 
     @NonNull
+    @Convert(converter = RenderTypeConverter.class)
+    @Column(name = "RENDER_TYPE", nullable = false, length = 3)
+    private RendererType renderType;
+
+    @NonNull
     @Convert(converter = ValidFlagConverter.class)
     @Column(name = "VALID_FLAG", nullable = false, length = 1)
     private ValidFlag validFlag;
