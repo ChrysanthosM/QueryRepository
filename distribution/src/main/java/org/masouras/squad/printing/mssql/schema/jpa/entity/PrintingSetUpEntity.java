@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.masouras.squad.printing.mssql.schema.jpa.control.*;
+import org.masouras.squad.printing.mssql.schema.jpa.control.LetterType;
+import org.masouras.squad.printing.mssql.schema.jpa.control.LetterTypeConverter;
 
 @Entity
 @Table(name = "PrintingSetUpTable")

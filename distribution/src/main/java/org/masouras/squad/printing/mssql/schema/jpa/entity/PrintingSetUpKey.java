@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.masouras.squad.printing.mssql.schema.jpa.control.*;
+import org.masouras.squad.printing.mssql.schema.jpa.control.ActivityType;
+import org.masouras.squad.printing.mssql.schema.jpa.control.ActivityTypeConverter;
+import org.masouras.squad.printing.mssql.schema.jpa.control.ContentType;
+import org.masouras.squad.printing.mssql.schema.jpa.control.ContentTypeConverter;
 
 import java.io.Serializable;
 
