@@ -1,9 +1,0 @@
-package org.masouras.squad.printing.mssql.repo;
-
-import org.masouras.base.repo.datasource.RepoBaseMSSQL;
-
-public interface ActivityRepo extends RepoBaseMSSQL {
-    enum NameOfSQL {
-        INSERT,
-    }
-}

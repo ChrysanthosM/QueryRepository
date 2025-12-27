@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>QueryRepository</name>
-    <url>http://maven.apache.org</url>
+    <url>https://maven.apache.org</url>
     <modules>
         <module>query.builder</module>
         <module>distribution</module>
