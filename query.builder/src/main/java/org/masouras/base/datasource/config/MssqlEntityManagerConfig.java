@@ -38,6 +38,8 @@ public non-sealed class MssqlEntityManagerConfig implements BaseEntityManagerCon
 
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
+        props.put("hibernate.hbm2ddl.auto", "none");
+        props.put("spring.sql.init.mode", "never");
         factory.setJpaPropertyMap(props);
 
         return factory;
