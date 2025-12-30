@@ -99,7 +99,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 
             if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("jdwp")) {
                 if (log.isInfoEnabled()) {
-                    log.info("Generated SQLs:");
+                    log.info("Generated SQLs for {}:", this.dataSourceType.getPropertyName());
                     bufferSQLs.forEach((e, s) -> log.info(s));
                 }
             }
