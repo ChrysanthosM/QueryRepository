@@ -11,6 +11,7 @@ public enum DbFieldDataType {
     DATATYPE_DOUBLE(false),
     DATATYPE_DATE(false),
     DATATYPE_BOOLEAN(false),
+    DATATYPE_BINARY(false),
     ;
 
     private final Boolean inQuotesRequirement;
