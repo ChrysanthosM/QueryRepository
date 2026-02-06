@@ -1,6 +1,5 @@
 package org.masouras.base.datasource.config;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -49,12 +48,6 @@ public non-sealed class MssqlEntityManagerConfig implements BaseEntityManagerCon
     @Override
     public PlatformTransactionManager getPlatformTransactionManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
-
-    @Bean(name = "mssqlEntityManager")
-    @Override
-    public EntityManager getEntityManager(@Qualifier("mssqlEntityManagerFactory") EntityManagerFactory emf) {
-        return emf.createEntityManager();
     }
 }
 

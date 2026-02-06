@@ -1,7 +1,6 @@
 package org.masouras.base.repo.base;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,8 +37,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     private final Map<E, String> bufferPositionalSQLs = new ConcurrentHashMap<>();
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
 
-    private EntityManager entityManager;
-    private @Autowired EntityManagerResolver entityManagerResolver;
+    @Autowired private EntityManagerResolver entityManagerResolver;
 
     protected AbstractJ2(Class<E> nameOfSQL, DataSourceType dataSourceType) {
         this.nameOfSQL = nameOfSQL;
@@ -48,13 +46,16 @@ public abstract class AbstractJ2<E extends Enum<E>> {
 
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
-    public <T> Query getNativeQuery(E nameOfSQL, Class<T> resultClass) { return entityManager.createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null), resultClass); }
-    public Query getNativeQuery(E nameOfSQL) { return entityManager.createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null)); }
+
+    public <T> Query getNativeQuery(E nameOfSQL, Class<T> resultClass) {
+        return entityManagerResolver.getEntityManager(dataSourceType).createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null), resultClass);
+    }
+    public Query getNativeQuery(E nameOfSQL) {
+        return entityManagerResolver.getEntityManager(dataSourceType).createNativeQuery(bufferPositionalSQLs.getOrDefault(nameOfSQL, null));
+    }
 
     @PostConstruct
     private void init() {
-        this.entityManager = entityManagerResolver.getEntityManager(dataSourceType);
-
         long startLoadingTime = System.currentTimeMillis();
         load();
         if (log.isInfoEnabled()) log.info("{} loaded in {}", this.getClass().getSimpleName(), System.currentTimeMillis() - startLoadingTime);
@@ -100,7 +101,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
             if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("jdwp")) {
                 if (log.isInfoEnabled()) {
                     log.info("Generated SQLs for {}:", this.dataSourceType.getPropertyName());
-                    bufferSQLs.forEach((e, s) -> log.info(s));
+                    bufferSQLs.forEach((_, s) -> log.info(s));
                 }
             }
 
@@ -109,13 +110,13 @@ public abstract class AbstractJ2<E extends Enum<E>> {
                             .collect(Collectors.toMap(
                                     Map.Entry::getKey,
                                     e -> {
-                                        Matcher m = Pattern.compile("\\?").matcher(e.getValue());
+                                        Matcher matcher = Pattern.compile("\\?").matcher(e.getValue());
                                         StringBuffer sb = new StringBuffer();
                                         int counter = 1;
-                                        while (m.find()) {
-                                            m.appendReplacement(sb, "?" + counter++);
+                                        while (matcher.find()) {
+                                            matcher.appendReplacement(sb, "?" + counter++);
                                         }
-                                        m.appendTail(sb);
+                                        matcher.appendTail(sb);
                                         return sb.toString();
                                     }
                             ))

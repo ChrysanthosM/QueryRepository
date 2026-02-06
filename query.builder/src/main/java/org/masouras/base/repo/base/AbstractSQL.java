@@ -18,9 +18,7 @@ public abstract class AbstractSQL<R extends Enum<R>, J extends AbstractJ2<R>, T>
     }
 
     public Query getNativeQuery(R nameOfSQL, Class<T> resultClass) { return j2sql.getNativeQuery(nameOfSQL, resultClass); }
-    public Query getNativeQuery(R nameOfSQL) {
-        return j2sql.getNativeQuery(nameOfSQL);
-    }
+    public Query getNativeQuery(R nameOfSQL) { return j2sql.getNativeQuery(nameOfSQL); }
 }
 
 
