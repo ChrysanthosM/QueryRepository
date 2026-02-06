@@ -18,9 +18,18 @@ public class EntityManagerResolver {
 
     public EntityManager getEntityManager(DataSourceType type) {
         return switch (type) {
-            case SQLITE -> sqliteProvider != null ? sqliteProvider.get() : null;
-            case MSSQL -> mssqlProvider != null ? mssqlProvider.get() : null;
-            case DB2_I -> db2iProvider != null ? db2iProvider.get() : null;
+            case SQLITE -> {
+                if (sqliteProvider == null) throw new IllegalStateException("SQLite datasource is not enabled (datasource.type.sqlite=true is missing).");
+                yield sqliteProvider.get();
+            }
+            case MSSQL -> {
+                if (mssqlProvider == null) throw new IllegalStateException("MSSQL datasource is not enabled (datasource.type.mssql=true is missing).");
+                yield mssqlProvider.get();
+            }
+            case DB2_I -> {
+                if (db2iProvider == null) throw new IllegalStateException("DB2_I datasource is not enabled (datasource.type.db2i=true is missing).");
+                yield db2iProvider.get();
+            }
         };
     }
 }
