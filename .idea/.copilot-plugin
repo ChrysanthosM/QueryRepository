@@ -1,6 +1,0 @@
-#Vaadin Copilot Integration Runtime Properties
-#Thu Feb 12 18:21:37 EET 2026
-endpoint=http\://127.0.0.1\:63342/api/copilot-d4b49b5f-7ce9-4ae1-8bf2-4c44d5216995
-ide=intellij
-supportedActions=write,writeBase64,delete,undo,redo,refresh,showInIde,getModulePaths,compileFiles,restartApplication,getVaadinRoutes,getVaadinVersion,getVaadinComponents,getVaadinEntities,getVaadinSecurity,reloadMavenModule,heartbeat
-version=1.5.10
