@@ -98,7 +98,7 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         try {
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
 
-            if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("jdwp")) {
+            if (ManagementFactory.getRuntimeMXBean().getInputArguments().stream().anyMatch(arg -> arg.contains("-agentlib:jdwp="))) {
                 if (log.isInfoEnabled()) {
                     log.info("Generated SQLs for {}:", this.dataSourceType.getPropertyName());
                     bufferSQLs.forEach((_, s) -> log.info(s));
