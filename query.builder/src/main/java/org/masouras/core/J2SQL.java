@@ -1,9 +1,9 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.masouras.base.datasource.DataSourceType;
@@ -32,7 +32,7 @@ public final class J2SQL {
     
     @Description("Select Operation")
     public static SQLFieldOperation operation(@NonNull Object addSelectedField, @NonNull String operation) {
-        Preconditions.checkArgument(OPERATION_SYMBOLS.contains(StringUtils.left(StringUtils.trimToEmpty(operation), 1)));
+        Validate.isTrue(OPERATION_SYMBOLS.contains(StringUtils.left(StringUtils.trimToEmpty(operation), 1)));
         return new SQLFieldOperation(addSelectedField, operation);
     }
 

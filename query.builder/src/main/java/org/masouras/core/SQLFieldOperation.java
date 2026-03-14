@@ -1,11 +1,11 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 final class SQLFieldOperation extends SqlUserSelection {
     @Override public Type getTypeOfSelection() { return this.getClass(); }
@@ -18,7 +18,7 @@ final class SQLFieldOperation extends SqlUserSelection {
         init(null, operation, object);
     }
     @Override public void init(@Nullable String setPrefix, @Nullable String expression, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         this.object = args[0];
         this.operation = expression;
     }

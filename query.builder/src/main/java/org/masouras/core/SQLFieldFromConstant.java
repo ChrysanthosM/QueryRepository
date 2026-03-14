@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import lombok.NonNull;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 import java.util.Optional;
 
 final class SQLFieldFromConstant extends SqlUserSelection {
@@ -19,7 +20,7 @@ final class SQLFieldFromConstant extends SqlUserSelection {
         this.inQuotesRequirement = Optional.ofNullable(inQuotesRequirement);
     }
     @Override public void init(@Nullable String setPrefix, @Nullable String asAlias, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         Preconditions.checkElementIndex(0, args.length);
         this.value = args[0];
         if (this.value instanceof ValueForBase enumValue) {

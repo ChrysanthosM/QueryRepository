@@ -1,6 +1,5 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -103,7 +102,7 @@ final class LInSQLBuilderParams {
     //-------Update Fields - Set Values
     void addUpdateFieldSetValue(Object updField, Object setValue) {
         PairOfTableField pairField = (PairOfTableField) updField;
-        Preconditions.checkNotNull(pairField.getBaseDbField().getFieldDataType());
+        Objects.requireNonNull(pairField.getBaseDbField().getFieldDataType());
         ResolveSqlUserSelection.getSqlUserSelection(updField).forEach(updSel ->
                 ResolveSqlUserSelection.getSqlUserSelection(setValue, pairField.getBaseDbField().getFieldDataType().getInQuotesRequirement()).forEach(setSel ->
                         this.updateFieldsSetValues.add(MutablePair.of(updSel, setSel))

@@ -3,9 +3,11 @@ package org.masouras.core;
 import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
+import org.apache.commons.lang3.Validate;
 import org.masouras.base.builder.BaseDbField;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 public final class SQLFieldFromPairOfTableField extends SqlUserSelection {
     @Override public Type getTypeOfSelection() { return this.getClass(); }
@@ -26,10 +28,10 @@ public final class SQLFieldFromPairOfTableField extends SqlUserSelection {
         init(setPrefix, asAlias, pairOfTableField);
     }
     @Override public void init(@Nullable String setPrefix, @Nullable String asAlias, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         Preconditions.checkElementIndex(0, args.length);
-        Preconditions.checkNotNull(args[0]);
-        Preconditions.checkArgument(args[0] instanceof PairOfTableField);
+        Objects.requireNonNull(args[0]);
+        Validate.isTrue(args[0] instanceof PairOfTableField);
 
         this.pairOfTableField = (PairOfTableField) args[0];
         this.sqlFieldFromTable = new SQLFieldFromTable(this.pairOfTableField.getBaseDbField(), asAlias, setPrefix);

@@ -1,10 +1,10 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.masouras.base.builder.BaseDbField;
@@ -68,13 +68,13 @@ final class LinSQL {
     }
 
     public void limitOffset(int setLimit, int setOffset) {
-        Preconditions.checkArgument(setLimit >= 0);
-        Preconditions.checkArgument(setOffset >= 0);
+        Validate.isTrue(setLimit >= 0);
+        Validate.isTrue(setOffset >= 0);
         workLInSQLBuilder.getWorkLInSQLBuilderParams().setLimitOffset(MutablePair.of(BigInteger.valueOf(setLimit), BigInteger.valueOf(setOffset)));
     }
     public void offsetFetch(int setOffset, int setFetch) {
-        Preconditions.checkArgument(setOffset >= 0);
-        Preconditions.checkArgument(setFetch >= 0);
+        Validate.isTrue(setOffset >= 0);
+        Validate.isTrue(setFetch >= 0);
         workLInSQLBuilder.getWorkLInSQLBuilderParams().setOffsetFetch(MutablePair.of(BigInteger.valueOf(setOffset), BigInteger.valueOf(setFetch)));
     }
 
@@ -131,7 +131,7 @@ final class LinSQL {
     }
 
     public void orderBy(@NonNull SortOrder sortOrder, @NonNull Object... addOrderBy) {
-        Preconditions.checkArgument(sortOrder == SortOrder.ASCENDING || sortOrder == SortOrder.DESCENDING);
+        Validate.isTrue(sortOrder == SortOrder.ASCENDING || sortOrder == SortOrder.DESCENDING);
         Stream.of(addOrderBy).forEach(s -> workLInSQLBuilder.getWorkLInSQLBuilderParams().addOrdering(s, sortOrder));
     }
     @SafeVarargs
@@ -177,7 +177,7 @@ final class LinSQL {
     }
 
     public void updateFieldSetValue(@NonNull PairOfTableField updField, @NonNull Object setValue) {
-        Preconditions.checkArgument(updField.getBaseDbField() != BaseDbField.all());
+        Validate.isTrue(updField.getBaseDbField() != BaseDbField.all());
         workLInSQLBuilder.getWorkLInSQLBuilderParams().setTypeOfSQL(J2SQLShared.TypeOfSQLStatement.SQL_UPDATE);
         workLInSQLBuilder.getWorkLInSQLBuilderParams().addUpdateFieldSetValue(updField, setValue);
     }

@@ -1,10 +1,10 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.springframework.context.annotation.Description;
 
@@ -336,26 +336,26 @@ public interface J2SQLShared {
     static SQLFunctionObject LOWER(@NonNull Object arg) { return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.LOWER, arg)); }
     static SQLFunctionObject INITCAP(@NonNull Object arg) { return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.INITCAP, arg)); }
     static SQLFunctionObject SPACE(int numOfSpaces) {
-        Preconditions.checkArgument(numOfSpaces >= 0);
+        Validate.isTrue(numOfSpaces >= 0);
         return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.SPACE, numOfSpaces));
     }
     static SQLFunctionObject INSTR(@NonNull Object arg, @NonNull Object find) { return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.INSTR, Stream.of(arg, find).toArray())); }
     static SQLFunctionObject LEFT(@NonNull Object arg, int len) {
-        Preconditions.checkArgument(len > 0);
+        Validate.isTrue(len > 0);
         return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.LEFT, Stream.of(arg, len).toArray()));
     }
     static SQLFunctionObject RIGHT(@NonNull Object arg, int len) {
-        Preconditions.checkArgument(len > 0);
+        Validate.isTrue(len > 0);
         return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.RIGHT, Stream.of(arg, len).toArray()));
     }
     static SQLFunctionObject REPEAT(@NonNull Object arg, int times) {
-        Preconditions.checkArgument(times > 0);
+        Validate.isTrue(times > 0);
         return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.REPEAT, Stream.of(arg, times).toArray()));
     }
     static SQLFunctionObject REPLACE(@NonNull Object arg, @NonNull Object find, @NonNull Object replaceWith) { return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.REPLACE, Stream.of(arg, find, replaceWith).toArray())); }
     static SQLFunctionObject SUBSTR(@NonNull Object arg, int from, int len) {
-        Preconditions.checkArgument(from > 0);
-        Preconditions.checkArgument(len > 0);
+        Validate.isTrue(from > 0);
+        Validate.isTrue(len > 0);
         return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.SUBSTR, Stream.of(arg, from, len).toArray()));
     }
     static SQLFunctionObject LPAD(@NonNull Object arg, @NonNull Object totalLength, @NonNull Object leadingChar) { return SQLFunctionObject.of(DeploySQLFunctionsBase.create(DeploySQLFunctionsBase.TypeOfSQLFunction.RPAD, Stream.of(arg, totalLength, leadingChar).toArray())); }

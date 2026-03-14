@@ -1,10 +1,10 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 final class SQLFunctionCONCAT extends SQLFunction {
@@ -23,7 +23,7 @@ final class SQLFunctionCONCAT extends SQLFunction {
 
     @Override
     public String alternateResolver(SQLRetrieverForDbAbstract forSQLRetrieverForDB, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         String result = StringUtils.join(super.getParamsSelectedFieldForSQL(forSQLRetrieverForDB, null), args[0].toString()) ;
         return getFinalValueAsAlias(result, super.getAsAlias());
     }

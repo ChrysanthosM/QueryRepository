@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 final class SQLFieldObject extends SqlUserSelection {
@@ -17,9 +18,9 @@ final class SQLFieldObject extends SqlUserSelection {
         init(setPrefix, asAlias, object);
     }
     @Override public void init(@Nullable String setPrefix, @Nullable String asAlias, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         Preconditions.checkElementIndex(0, args.length);
-        Preconditions.checkNotNull(args[0]);
+        Objects.requireNonNull(args[0]);
         this.object = args[0];
         super.setHasPrefix(setPrefix);
         super.setAsAlias(asAlias);

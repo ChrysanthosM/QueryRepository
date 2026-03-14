@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Triple;
 import org.masouras.base.builder.BaseDbField;
 import org.masouras.base.builder.BaseDbTable;
@@ -12,6 +13,7 @@ import org.masouras.base.builder.BaseDbTable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 final class SQLFieldFromTable extends SqlUserSelection {
@@ -33,10 +35,10 @@ final class SQLFieldFromTable extends SqlUserSelection {
         init(setPrefix, asAlias, dbF);
     }
     @Override public void init(@Nullable String setPrefix, @Nullable String asAlias, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         Preconditions.checkElementIndex(0, args.length);
-        Preconditions.checkNotNull(args[0]);
-        Preconditions.checkArgument(args[0] instanceof BaseDbField);
+        Objects.requireNonNull(args[0]);
+        Validate.isTrue(args[0] instanceof BaseDbField);
         this.dbF = (BaseDbField) args[0];
         this.dbField = DbFieldInstances.getInstance(this.dbF);
         super.setHasPrefix(setPrefix);

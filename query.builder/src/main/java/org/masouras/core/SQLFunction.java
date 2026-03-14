@@ -1,6 +1,5 @@
 package org.masouras.core;
 
-import com.google.common.base.Preconditions;
 import jakarta.annotation.Nullable;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +62,7 @@ abstract sealed class SQLFunction extends SqlUserSelection
     }
 
     @Override public void init(@Nullable String setPrefix, @Nullable String asAlias, @Nullable Object... args) {
-        Preconditions.checkNotNull(args);
+        Objects.requireNonNull(args);
         Stream.of(args).filter(Objects::nonNull).forEach(arg -> this.params.add(arg));
         super.setAsAlias(asAlias);
         super.setHasPrefix(setPrefix);
