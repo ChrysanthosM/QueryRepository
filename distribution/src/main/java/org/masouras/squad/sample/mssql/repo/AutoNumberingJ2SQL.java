@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.masouras.core.J2SQLShared.MAX;
 
-@J2SqlLoader("mssql")
+@J2SqlLoader("maria")
 public class AutoNumberingJ2SQL extends AbstractJ2<AutoNumberingRepo.NameOfSQL> implements AutoNumberingRepo {
     private final AutoNumberingTable autoNumberingTable;
     @Autowired
     private AutoNumberingJ2SQL(AutoNumberingTable autoNumberingTable) {
-        super(NameOfSQL.class, DataSourceType.MSSQL);
+        super(NameOfSQL.class, DataSourceType.MARIA);
         this.autoNumberingTable = autoNumberingTable;
     }
 

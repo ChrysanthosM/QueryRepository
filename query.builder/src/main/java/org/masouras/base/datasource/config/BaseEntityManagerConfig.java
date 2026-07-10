@@ -7,7 +7,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 sealed interface BaseEntityManagerConfig
-        permits Db2iEntityManagerConfig, MssqlEntityManagerConfig, SqliteEntityManagerConfig {
+        permits Db2iEntityManagerConfig, MariaEntityManagerConfig, MssqlEntityManagerConfig, SqliteEntityManagerConfig {
     LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(DataSource dataSource);
     PlatformTransactionManager getPlatformTransactionManager(EntityManagerFactory emf);
 }

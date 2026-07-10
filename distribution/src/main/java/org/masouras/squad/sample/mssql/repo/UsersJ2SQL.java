@@ -8,12 +8,12 @@ import org.masouras.core.J2SQL;
 import org.masouras.squad.sample.mssql.schema.table.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlLoader("mssql")
+@J2SqlLoader("maria")
 public class UsersJ2SQL extends AbstractJ2<UsersRepo.NameOfSQL> implements UsersRepo {
     private final UsersTable usersTable;
     @Autowired
     private UsersJ2SQL(UsersTable usersTable) {
-        super(NameOfSQL.class, DataSourceType.MSSQL);
+        super(NameOfSQL.class, DataSourceType.MARIA);
         this.usersTable = usersTable;
     }
 

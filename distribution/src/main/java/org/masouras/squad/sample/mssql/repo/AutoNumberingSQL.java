@@ -5,7 +5,7 @@ import org.masouras.base.repo.base.AbstractSQL;
 import org.masouras.squad.sample.mssql.schema.table.AutoNumberingTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlService("mssql")
+@J2SqlService("maria")
 public class AutoNumberingSQL extends AbstractSQL<AutoNumberingRepo.NameOfSQL, AutoNumberingJ2SQL, AutoNumberingTable> {
     @Autowired
     public AutoNumberingSQL(AutoNumberingJ2SQL j2sql) {

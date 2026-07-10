@@ -14,6 +14,9 @@ public class EntityManagerResolver {
     private MssqlEntityManagerProvider mssqlProvider;
 
     @Autowired(required = false)
+    private MariaEntityManagerProvider mariaProvider;
+
+    @Autowired(required = false)
     private Db2iEntityManagerProvider db2iProvider;
 
     public EntityManager getEntityManager(DataSourceType type) {
@@ -25,6 +28,10 @@ public class EntityManagerResolver {
             case MSSQL -> {
                 if (mssqlProvider == null) throw new IllegalStateException("MSSQL datasource is not enabled (datasource.type.mssql=true is missing).");
                 yield mssqlProvider.get();
+            }
+            case MARIA -> {
+                if (mariaProvider == null) throw new IllegalStateException("MARIA datasource is not enabled (datasource.type.maria=true is missing).");
+                yield mariaProvider.get();
             }
             case DB2_I -> {
                 if (db2iProvider == null) throw new IllegalStateException("DB2_I datasource is not enabled (datasource.type.db2i=true is missing).");

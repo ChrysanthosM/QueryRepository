@@ -3,7 +3,7 @@ package org.masouras.base.repo.datasource;
 import org.masouras.base.datasource.DataSourceType;
 
 sealed public interface RepoBase<T extends DataSourceType>
-        permits RepoBaseDB2i, RepoBaseMSSQL, RepoBaseSQLite {
+        permits RepoBaseDB2i, RepoBaseMSSQL, RepoBaseMariaDB, RepoBaseSQLite {
     T getDataSourceType();
 
     @SuppressWarnings("unchecked")

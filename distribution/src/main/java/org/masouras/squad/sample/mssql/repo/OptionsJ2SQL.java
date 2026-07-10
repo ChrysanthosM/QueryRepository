@@ -8,12 +8,12 @@ import org.masouras.core.J2SQL;
 import org.masouras.squad.sample.mssql.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlLoader("mssql")
+@J2SqlLoader("maria")
 public class OptionsJ2SQL extends AbstractJ2<OptionsRepo.NameOfSQL> implements OptionsRepo {
     private final OptionsTable optionsTable;
     @Autowired
     private OptionsJ2SQL(OptionsTable optionsTable) {
-        super(NameOfSQL.class, DataSourceType.MSSQL);
+        super(NameOfSQL.class, DataSourceType.MARIA);
         this.optionsTable = optionsTable;
     }
 

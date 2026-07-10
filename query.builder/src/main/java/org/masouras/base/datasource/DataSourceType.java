@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum DataSourceType {
     SQLITE("sqlite", null),
     MSSQL("mssql", null),
+    MARIA("maria", null),
     DB2_I("db2i", "$."),
     ;
     private final String propertyName;

@@ -48,6 +48,7 @@ public class J2SqlBeansRegistry implements BeanDefinitionRegistryPostProcessor, 
     @Override
     public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) throws BeansException {
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+
         Set<Class<? extends Annotation>> extendedAnnotations = Stream.concat(
                 createBeanAnnotations.stream(),
                 Stream.of(J2SqlFieldValues.class)

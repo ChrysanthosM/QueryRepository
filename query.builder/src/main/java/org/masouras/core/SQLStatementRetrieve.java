@@ -13,6 +13,7 @@ final class SQLStatementRetrieve {
             case SQLITE -> this.sqlRetrieverForDB = new SQLRetrieverForDbSQLite(typeOfNamingSystemOrNormalized);
             case DB2_I -> this.sqlRetrieverForDB = new SQLRetrieverForDbDB2i(typeOfNamingSystemOrNormalized, dbPrefixForTable);
             case MSSQL -> this.sqlRetrieverForDB = new SQLRetrieverForDbMSSQL(typeOfNamingSystemOrNormalized, dbPrefixForTable);
+            case MARIA -> this.sqlRetrieverForDB = new SQLRetrieverForDbMaria(typeOfNamingSystemOrNormalized, dbPrefixForTable);
             default -> throw new UnsupportedOperationException(typeOfDB + " is not supported");
         }
     }

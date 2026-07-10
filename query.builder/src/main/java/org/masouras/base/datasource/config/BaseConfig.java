@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 sealed interface BaseConfig
-        permits Db2iConfig, MssqlConfig, SqliteConfig {
+        permits Db2iConfig, MariaConfig, MssqlConfig, SqliteConfig {
     DataSource getDataSource();
     JdbcTemplate getJdbcTemplate(DataSource dataSource);
 }

@@ -5,7 +5,7 @@ import org.masouras.base.repo.base.AbstractSQL;
 import org.masouras.squad.sample.mssql.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@J2SqlService("mssql")
+@J2SqlService("maria")
 public class OptionsSQL extends AbstractSQL<OptionsRepo.NameOfSQL, OptionsJ2SQL, OptionsTable> {
     @Autowired
     public OptionsSQL(OptionsJ2SQL j2sql) {

@@ -6,7 +6,7 @@ import org.masouras.core.PairOfTableField;
 import org.masouras.squad.sample.mssql.schema.structure.DbField;
 import org.masouras.squad.sample.mssql.schema.structure.DbTable;
 
-@J2SqlTable("mssql")
+@J2SqlTable("maria")
 public class AutoNumberingTable extends AbstractTable {
     private AutoNumberingTable() {
         super(DbTable.AUTO_NUMBERING);
