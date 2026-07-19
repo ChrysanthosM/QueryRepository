@@ -1,78 +1,85 @@
-### Java ###
+# Java / build artifacts
 *.class
 *.jar
 *.war
 *.ear
 *.log
 
-### Maven ###
-target/
+# Maven
+/target/
+**/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
-### Gradle ###
+# Maven Wrapper (commit the wrapper files)
+/.mvn/
+mvnw
+mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
 .gradle/
 build/
+**/build/
 !gradle/wrapper/gradle-wrapper.jar
-gradle-app.setting
 
-### Spring Boot ###
-application-local.properties
-application-*.local.properties
-*.env
-.env
-.env.*
-*.yml.local
-*.yaml.local
-
-### Secrets ###
-*.pem
-*.crt
-*.key
-*.p12
-*.jks
-secrets/
-*.secret
-*.secrets
-
-### Logs ###
-logs/
-*.log
-*.out
-
-### IntelliJ IDEA ###
-.idea/
+# IDEs
+/.idea/
+*.iml
 *.iws
 *.ipr
-*.iml
-out/
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
 
-### VS Code ###
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
 .vscode/
 
-### OS junk ###
+# OS
 .DS_Store
 Thumbs.db
 
-### Docker ###
-docker-compose.override.yml
-docker-compose.local.yml
+# Secrets and keys
+*.jks
+*.p12
+firebase-key.json
+.env
+.env.*
+application-local.properties
+application-*.local.properties
+*.yml.local
+*.yaml.local
 
-### Temp files ###
-*.tmp
-*.bak
-*.swp
-*.swo
-
-### Node (αν έχεις frontend ξεχωριστό) ###
+# Node / frontend
+/frontend/
 node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+webpack.config.js
+package-lock.json
 pnpm-lock.yaml
+.yarn/
 
-### Git ###
-.gitignore_global
+# Testcontainers
+/testcontainers.properties
+
+# Misc
+*.swp
