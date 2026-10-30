@@ -24,7 +24,7 @@ class LinSQLCommons {
         applyAlias = fixAsAliasName(applyAlias);
         return " AS \"" + applyAlias.trim() + "\"";
     }
-    static String fixAsAliasName(@NonNull String applyAlias) { return applyAlias.replaceAll(StringUtils.SPACE, UNDERSCORE); }
+    static String fixAsAliasName(@NonNull String applyAlias) { return applyAlias.replace(StringUtils.SPACE, UNDERSCORE); }
 
 
 }
