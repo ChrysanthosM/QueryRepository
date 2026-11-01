@@ -4,7 +4,6 @@ import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.repo.base.AbstractJ2;
-import org.masouras.core.J2SQL;
 import org.masouras.squad.sample.sqlite.schema.table.OptionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,16 +18,16 @@ public class OptionsJ2SQL extends AbstractJ2<OptionsRepo.NameOfSQL> implements O
 
     @LoadJ2SQL
     public void loadList() {
-        addLoader(NameOfSQL.LIST, J2SQL.create(getDataSourceType()).from(optionsTable));
+        addLoader(NameOfSQL.LIST, newJ2SQL().from(optionsTable));
     }
 
     @LoadJ2SQL
     public void loadInsert() {
-        addLoader(NameOfSQL.INSERT, J2SQL.create(getDataSourceType()).insertInto(optionsTable).insertRow());
+        addLoader(NameOfSQL.INSERT, newJ2SQL().insertInto(optionsTable).insertRow());
     }
 
     @LoadJ2SQL
     public void loadFind() {
-        addLoader(NameOfSQL.FIND, J2SQL.create(getDataSourceType()).from(optionsTable).where(optionsTable.OPTION_TYPE.eq("?")));
+        addLoader(NameOfSQL.FIND, newJ2SQL().from(optionsTable).where(optionsTable.OPTION_TYPE.eq("?")));
     }
 }

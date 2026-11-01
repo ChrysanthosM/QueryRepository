@@ -11,6 +11,7 @@ import org.masouras.base.annotation.LoadJ2SQL;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.datasource.EntityManagerResolver;
 import org.masouras.core.J2SQL;
+import org.masouras.core.J2SQLFactoryDefault;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.management.ManagementFactory;
@@ -38,11 +39,14 @@ public abstract class AbstractJ2<E extends Enum<E>> {
     private final Deque<Pair<E, CompletableFuture<J2SQL>>> loadBuffers = new ConcurrentLinkedDeque<>();
 
     @Autowired private EntityManagerResolver entityManagerResolver;
+    @Autowired private J2SQLFactoryDefault j2SQLFactoryDefault;
 
     protected AbstractJ2(Class<E> nameOfSQL, DataSourceType dataSourceType) {
         this.nameOfSQL = nameOfSQL;
         this.dataSourceType = dataSourceType;
     }
+
+    public J2SQL newJ2SQL() { return j2SQLFactoryDefault.create(this.dataSourceType); }
 
     public J2SQL getJ2SQL(E nameOfSQL) { return bufferJ2SQLs.getOrDefault(nameOfSQL, null); }
     public String getSQL(E nameOfSQL) { return bufferSQLs.getOrDefault(nameOfSQL, null); }
@@ -98,11 +102,9 @@ public abstract class AbstractJ2<E extends Enum<E>> {
         try {
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
 
-            if (ManagementFactory.getRuntimeMXBean().getInputArguments().stream().anyMatch(arg -> arg.contains("-agentlib:jdwp="))) {
-                if (log.isInfoEnabled()) {
-                    log.info("Generated SQLs for {}:", this.dataSourceType.getPropertyName());
-                    bufferSQLs.forEach((_, s) -> log.info(s));
-                }
+            if (log.isInfoEnabled() || (ManagementFactory.getRuntimeMXBean().getInputArguments().stream().anyMatch(arg -> arg.contains("-agentlib:jdwp=")))) {
+                log.info("Generated SQLs for {}:", this.dataSourceType.getPropertyName());
+                bufferSQLs.forEach((_, s) -> log.info(s));
             }
 
             bufferPositionalSQLs.putAll(

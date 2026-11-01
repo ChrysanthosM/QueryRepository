@@ -4,7 +4,6 @@ import org.masouras.base.annotation.J2SqlLoader;
 import org.masouras.base.annotation.LoadJ2SQL;
 import org.masouras.base.datasource.DataSourceType;
 import org.masouras.base.repo.base.AbstractJ2;
-import org.masouras.core.J2SQL;
 import org.masouras.squad.sample.mssql.schema.table.AutoNumberingTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,22 +20,22 @@ public class AutoNumberingJ2SQL extends AbstractJ2<AutoNumberingRepo.NameOfSQL> 
 
     @LoadJ2SQL
     public void loadList() {
-        addLoader(NameOfSQL.LIST, J2SQL.create(getDataSourceType()).from(autoNumberingTable));
+        addLoader(NameOfSQL.LIST, newJ2SQL().from(autoNumberingTable));
     }
 
     @LoadJ2SQL
     public void loadInsert() {
-        addLoader(NameOfSQL.INSERT, J2SQL.create(getDataSourceType()).insertInto(autoNumberingTable).insertRow());
+        addLoader(NameOfSQL.INSERT, newJ2SQL().insertInto(autoNumberingTable).insertRow());
     }
 
     @LoadJ2SQL
     public void loadFind() {
-        addLoader(NameOfSQL.FIND, J2SQL.create(getDataSourceType()).from(autoNumberingTable).where(autoNumberingTable.ENTITY_TYPE.eq("?")));
+        addLoader(NameOfSQL.FIND, newJ2SQL().from(autoNumberingTable).where(autoNumberingTable.ENTITY_TYPE.eq("?")));
     }
 
     @LoadJ2SQL @SuppressWarnings("unused")
     public void loadMaxNumberPerEntity() {
-        addLoader(NameOfSQL.MAX_NUMBER_PER_ENTITY, J2SQL.create(getDataSourceType()).from(autoNumberingTable).
+        addLoader(NameOfSQL.MAX_NUMBER_PER_ENTITY, newJ2SQL().from(autoNumberingTable).
                 select(autoNumberingTable.ENTITY_TYPE, MAX(autoNumberingTable.ENTITY_NUMBER))
                 .groupBy(autoNumberingTable.ENTITY_TYPE)
                 .orderBy(autoNumberingTable.ENTITY_TYPE));
@@ -44,7 +43,7 @@ public class AutoNumberingJ2SQL extends AbstractJ2<AutoNumberingRepo.NameOfSQL> 
 
     @LoadJ2SQL @SuppressWarnings("unused")
     public void loadDeleteAll() {
-        addLoader(NameOfSQL.DELETE_ALL, J2SQL.create(getDataSourceType()).deleteFrom(autoNumberingTable));
+        addLoader(NameOfSQL.DELETE_ALL, newJ2SQL().deleteFrom(autoNumberingTable));
     }
 
 }
